@@ -8,7 +8,8 @@
     <style>
         body {
             background-color: #1a0f0a;
-            background-image: linear-gradient(to bottom, rgba(26, 15, 10, 0.75), rgba(26, 15, 10, 0.95)), url('https://unsplash.com');
+            /* Живой сочный бэкграунд с закатом в стиле RDR2 */
+            background-image: linear-gradient(to bottom, rgba(15, 5, 2, 0.6), rgba(20, 10, 5, 0.95)), url('https://unsplash.com');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -20,26 +21,26 @@
         header {
             text-align: center;
             padding: 60px 20px;
-            background: linear-gradient(to bottom, rgba(45, 25, 16, 0.95), rgba(26, 15, 10, 0.85));
+            background: linear-gradient(to bottom, rgba(40, 15, 10, 0.95), rgba(15, 5, 2, 0.85));
             border-bottom: 4px double #e74c3c;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.8);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.9);
         }
         header h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 4rem;
+            font-size: 4.5rem;
             color: #e74c3c;
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 6px;
-            text-shadow: 3px 3px 0px #000, 0 0 20px rgba(231, 76, 60, 0.4);
+            letter-spacing: 8px;
+            text-shadow: 3px 3px 0px #000, 0 0 25px rgba(231, 76, 60, 0.6);
         }
         header p {
             font-style: italic;
             color: #f39c12;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin: 15px 0 0 0;
             font-weight: bold;
-            text-shadow: 1px 1px 2px #000;
+            text-shadow: 2px 2px 4px #000;
         }
         .container {
             max-width: 1200px;
@@ -49,24 +50,30 @@
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 35px;
+            gap: 40px;
         }
         .card {
             background: #fcf3cf;
             color: #2c3e50;
             border: 6px solid #2b1a09;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.7), inset 0 0 40px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 40px rgba(0,0,0,0.15);
             padding: 25px;
             text-align: center;
             position: relative;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            /* Плавная анимация покачивания */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-origin: center;
             cursor: pointer;
         }
+        /* Живой эффект взлетающего плаката при наведении */
         .card:hover {
-            transform: translateY(-12px) scale(1.03) rotate(1.5deg);
-            box-shadow: 0 25px 40px rgba(231, 76, 60, 0.5), inset 0 0 40px rgba(0,0,0,0.1);
+            transform: translateY(-15px) scale(1.04) rotate(-2deg);
+            box-shadow: 0 30px 50px rgba(231, 76, 60, 0.6), inset 0 0 40px rgba(0,0,0,0.1);
             border-color: #e74c3c;
+        }
+        /* Каждый второй плакат отклоняется в другую сторону для живости */
+        .card:nth-child(even):hover {
+            transform: translateY(-15px) scale(1.04) rotate(2deg);
         }
         .wanted-tag {
             font-family: 'Playfair Display', serif;
@@ -89,10 +96,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.6s ease;
         }
         .card:hover img {
-            transform: scale(1.1);
+            transform: scale(1.15);
         }
         .card h3 {
             font-size: 1.3rem;
@@ -133,7 +140,7 @@
             padding: 50px;
             color: #bdc3c7;
             font-size: 0.9rem;
-            background: rgba(26, 15, 10, 0.95);
+            background: rgba(15, 5, 2, 0.95);
             border-top: 3px solid #e74c3c;
             margin-top: 60px;
         }
@@ -155,7 +162,6 @@
     </footer>
 
     <script>
-        // Читаем базу данных прямо из текущей папки сайта
         fetch('data.json')
             .then(res => res.json())
             .then(data => {
@@ -166,12 +172,28 @@
                 }
                 
                 data.forEach(game => {
+                    const platformLower = game.platforms.toLowerCase();
+                    let displayImage = '';
+                    
+                    // Жестко вшиваем красочные и качественные арты, чтобы они никогда не ломались
+                    if (platformLower.includes('epic')) {
+                        displayImage = 'https://unsplash.com'; 
+                    } else if (platformLower.includes('playstation') || platformLower.includes('ps')) {
+                        displayImage = 'https://unsplash.com'; // Сочный геймпад PS5
+                    } else if (platformLower.includes('steam')) {
+                        displayImage = 'https://unsplash.com'; 
+                    } else if (platformLower.includes('gog')) {
+                        displayImage = 'https://unsplash.com'; 
+                    } else {
+                        displayImage = 'https://unsplash.com'; 
+                    }
+                    
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
                         <div class="wanted-tag">WANTED</div>
                         <div class="image-container">
-                            <img src="${game.image}" alt="${game.title}">
+                            <img src="${displayImage}" alt="${game.title}">
                         </div>
                         <h3>${game.title}</h3>
                         <div class="meta">Платформа: ${game.platforms}</div>
