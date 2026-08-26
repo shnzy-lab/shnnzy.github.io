@@ -8,8 +8,8 @@
     <style>
         body {
             background-color: #1a0f0a;
-            /* Красочный вестерн-фон с закатом */
-            background-image: linear-gradient(to bottom, rgba(26, 15, 10, 0.7), rgba(26, 15, 10, 0.9)), url('https://unsplash.com');
+            /* Красочный вестерн-фон с закатом и каньоном */
+            background-image: linear-gradient(to bottom, rgba(26, 15, 10, 0.75), rgba(26, 15, 10, 0.95)), url('https://unsplash.com');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -21,7 +21,7 @@
         header {
             text-align: center;
             padding: 60px 20px;
-            background: linear-gradient(to bottom, rgba(45, 25, 16, 0.9), rgba(26, 15, 10, 0.8));
+            background: linear-gradient(to bottom, rgba(45, 25, 16, 0.95), rgba(26, 15, 10, 0.85));
             border-bottom: 4px double #e74c3c;
             box-shadow: 0 5px 25px rgba(0,0,0,0.8);
         }
@@ -60,12 +60,12 @@
             padding: 25px;
             text-align: center;
             position: relative;
-            /* Плавная живая анимация */
+            /* Живая анимация взлета и покачивания */
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             transform-origin: center;
             cursor: pointer;
         }
-        /* Анимация покачивания и взлета при наведении в стиле RDR2 */
+        /* Эффект качающегося от ветра объявления WANTED */
         .card:hover {
             transform: translateY(-12px) scale(1.03) rotate(1.5deg);
             box-shadow: 0 25px 40px rgba(231, 76, 60, 0.5), inset 0 0 40px rgba(0,0,0,0.1);
@@ -96,7 +96,7 @@
             transition: transform 0.5s ease;
         }
         .card:hover img {
-            transform: scale(1.1); /* Картинка слегка увеличивается внутри рамки */
+            transform: scale(1.1);
         }
         .card h3 {
             font-size: 1.3rem;
@@ -137,7 +137,7 @@
             padding: 50px;
             color: #bdc3c7;
             font-size: 0.9rem;
-            background: rgba(26, 15, 10, 0.9);
+            background: rgba(26, 15, 10, 0.95);
             border-top: 3px solid #e74c3c;
             margin-top: 60px;
         }
@@ -151,7 +151,9 @@
     </header>
 
     <div class="container">
-        <div class="grid" id="games-grid"></div>
+        <div class="grid" id="games-grid">
+            <!-- Сюда скрипт выведет игры автоматически -->
+        </div>
     </div>
 
     <footer>
@@ -159,7 +161,7 @@
     </footer>
 
     <script>
-        // Загружаем актуальные игры из файла базы данных
+        // Подключаемся к вашей личной базе данных игр
         fetch('https://github.io')
             .then(res => res.json())
             .then(data => {
@@ -170,5 +172,35 @@
                 }
                 
                 data.forEach(game => {
-                    // Исправление картинок: если у внешнего API ломается ссылка, подставляем красивую заглушку по теме платформы
-                    let fallbackImage = '
+                    // Красивые стилизованные вестерн-заглушки для картинок в зависимости от магазина
+                    let fallbackImage = 'https://unsplash.com';
+                    const platformLower = game.platforms.toLowerCase();
+                    
+                    if (platformLower.includes('epic')) {
+                        fallbackImage = 'https://unsplash.com'; // Эпичная игровая зона
+                    } else if (platformLower.includes('steam')) {
+                        fallbackImage = 'https://unsplash.com'; // Классический ПК сетап
+                    } else if (platformLower.includes('gog')) {
+                        fallbackImage = 'https://unsplash.com'; // Олдскульный замок/ретро
+                    }
+                    
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="wanted-tag">WANTED</div>
+                        <div class="image-container">
+                            <img src="${game.image}" onerror="this.onerror=null; this.src='${fallbackImage}';" alt="${game.title}">
+                        </div>
+                        <h3>${game.title}</h3>
+                        <div class="meta">Платформа: ${game.platforms}</div>
+                        <a href="${game.url}" target="_blank" class="btn">Забрать награду</a>
+                    `;
+                    grid.appendChild(card);
+                });
+            })
+            .catch(err => {
+                document.getElementById('games-grid').innerHTML = '<p style="color:#e74c3c; text-align:center; grid-column:1/-1;">Ошибка загрузки объявлений шерифа.</p>';
+            });
+    </script>
+</body>
+</html>
