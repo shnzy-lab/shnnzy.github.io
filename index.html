@@ -8,7 +8,6 @@
     <style>
         body {
             background-color: #1a0f0a;
-            /* Красочный вестерн-фон с закатом и каньоном */
             background-image: linear-gradient(to bottom, rgba(26, 15, 10, 0.75), rgba(26, 15, 10, 0.95)), url('https://unsplash.com');
             background-size: cover;
             background-position: center;
@@ -60,12 +59,10 @@
             padding: 25px;
             text-align: center;
             position: relative;
-            /* Живая анимация взлета и покачивания */
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             transform-origin: center;
             cursor: pointer;
         }
-        /* Эффект качающегося от ветра объявления WANTED */
         .card:hover {
             transform: translateY(-12px) scale(1.03) rotate(1.5deg);
             box-shadow: 0 25px 40px rgba(231, 76, 60, 0.5), inset 0 0 40px rgba(0,0,0,0.1);
@@ -87,7 +84,6 @@
             overflow: hidden;
             border: 3px solid #2b1a09;
             background: #1a0f0a;
-            position: relative;
         }
         .card img {
             width: 100%;
@@ -151,9 +147,7 @@
     </header>
 
     <div class="container">
-        <div class="grid" id="games-grid">
-            <!-- Сюда скрипт выведет игры автоматически -->
-        </div>
+        <div class="grid" id="games-grid"></div>
     </div>
 
     <footer>
@@ -161,8 +155,8 @@
     </footer>
 
     <script>
-        // Подключаемся к вашей личной базе данных игр
-        fetch('https://github.io')
+        // Читаем базу данных прямо из текущей папки сайта
+        fetch('data.json')
             .then(res => res.json())
             .then(data => {
                 const grid = document.getElementById('games-grid');
@@ -172,24 +166,12 @@
                 }
                 
                 data.forEach(game => {
-                    // Красивые стилизованные вестерн-заглушки для картинок в зависимости от магазина
-                    let fallbackImage = 'https://unsplash.com';
-                    const platformLower = game.platforms.toLowerCase();
-                    
-                    if (platformLower.includes('epic')) {
-                        fallbackImage = 'https://unsplash.com'; // Эпичная игровая зона
-                    } else if (platformLower.includes('steam')) {
-                        fallbackImage = 'https://unsplash.com'; // Классический ПК сетап
-                    } else if (platformLower.includes('gog')) {
-                        fallbackImage = 'https://unsplash.com'; // Олдскульный замок/ретро
-                    }
-                    
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
                         <div class="wanted-tag">WANTED</div>
                         <div class="image-container">
-                            <img src="${game.image}" onerror="this.onerror=null; this.src='${fallbackImage}';" alt="${game.title}">
+                            <img src="${game.image}" alt="${game.title}">
                         </div>
                         <h3>${game.title}</h3>
                         <div class="meta">Платформа: ${game.platforms}</div>
