@@ -8,8 +8,8 @@
     <style>
         body {
             background-color: #1a0f0a;
-            /* Живой сочный бэкграунд с закатом в стиле RDR2 */
-            background-image: linear-gradient(to bottom, rgba(15, 5, 2, 0.6), rgba(20, 10, 5, 0.95)), url('https://unsplash.com');
+            /* Каноничный, красочный вестерн-пейзаж */
+            background-image: linear-gradient(to bottom, rgba(15, 5, 2, 0.6), rgba(20, 10, 5, 0.95)), url('https://imgur.com');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -175,17 +175,17 @@
                     const platformLower = game.platforms.toLowerCase();
                     let displayImage = '';
                     
-                    // Жестко вшиваем красочные и качественные арты, чтобы они никогда не ломались
+                    // Вшиваем железобетонные ссылки на качественные обложки
                     if (platformLower.includes('epic')) {
-                        displayImage = 'https://unsplash.com'; 
+                        displayImage = 'https://imgur.com'; // Фирменный арт Epic Games
                     } else if (platformLower.includes('playstation') || platformLower.includes('ps')) {
-                        displayImage = 'https://unsplash.com'; // Сочный геймпад PS5
+                        displayImage = 'https://imgur.com'; // Стильный геймпад PS5
                     } else if (platformLower.includes('steam')) {
-                        displayImage = 'https://unsplash.com'; 
+                        displayImage = 'https://imgur.com'; // Подсветка ПК-сетапа
                     } else if (platformLower.includes('gog')) {
-                        displayImage = 'https://unsplash.com'; 
+                        displayImage = 'https://imgur.com'; // Ретро-арт
                     } else {
-                        displayImage = 'https://unsplash.com'; 
+                        displayImage = 'https://imgur.com'; // Общая игровая заглушка
                     }
                     
                     const card = document.createElement('div');
