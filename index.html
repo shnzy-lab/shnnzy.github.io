@@ -8,8 +8,8 @@
     <style>
         body {
             background-color: #1a0f0a;
-            /* Каноничный, красочный вестерн-пейзаж */
-            background-image: linear-gradient(to bottom, rgba(15, 5, 2, 0.6), rgba(20, 10, 5, 0.95)), url('https://imgur.com');
+            /* Обновлённый, сочный вестерн-арт с каньоном и ковбоем */
+            background-image: linear-gradient(to bottom, rgba(15, 5, 2, 0.65), rgba(20, 10, 5, 0.98)), url('https://unsplash.com');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -60,20 +60,19 @@
             padding: 25px;
             text-align: center;
             position: relative;
-            /* Плавная анимация покачивания */
+            /* Настоящая живая ковбойская анимация покачивания */
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-origin: center;
             cursor: pointer;
         }
-        /* Живой эффект взлетающего плаката при наведении */
+        /* Взлёт плаката с разворотом от ветра */
         .card:hover {
-            transform: translateY(-15px) scale(1.04) rotate(-2deg);
-            box-shadow: 0 30px 50px rgba(231, 76, 60, 0.6), inset 0 0 40px rgba(0,0,0,0.1);
+            transform: translateY(-15px) scale(1.05) rotate(-2.5deg);
+            box-shadow: 0 30px 50px rgba(231, 76, 60, 0.7), inset 0 0 40px rgba(0,0,0,0.1);
             border-color: #e74c3c;
         }
-        /* Каждый второй плакат отклоняется в другую сторону для живости */
         .card:nth-child(even):hover {
-            transform: translateY(-15px) scale(1.04) rotate(2deg);
+            transform: translateY(-15px) scale(1.05) rotate(2.5deg);
         }
         .wanted-tag {
             font-family: 'Playfair Display', serif;
@@ -162,7 +161,8 @@
     </footer>
 
     <script>
-        fetch('data.json')
+        // Добавляем хвостик ?v=случайное_число, чтобы полностью уничтожить старый кэш файла базы данных
+        fetch('data.json?v=' + Math.random())
             .then(res => res.json())
             .then(data => {
                 const grid = document.getElementById('games-grid');
@@ -175,17 +175,17 @@
                     const platformLower = game.platforms.toLowerCase();
                     let displayImage = '';
                     
-                    // Вшиваем железобетонные ссылки на качественные обложки
+                    // Самые стабильные, открытые мировые ссылки на игровые обложки, которые прогрузятся везде
                     if (platformLower.includes('epic')) {
-                        displayImage = 'https://imgur.com'; // Фирменный арт Epic Games
+                        displayImage = 'https://unsplash.com'; 
                     } else if (platformLower.includes('playstation') || platformLower.includes('ps')) {
-                        displayImage = 'https://imgur.com'; // Стильный геймпад PS5
+                        displayImage = 'https://unsplash.com'; 
                     } else if (platformLower.includes('steam')) {
-                        displayImage = 'https://imgur.com'; // Подсветка ПК-сетапа
+                        displayImage = 'https://unsplash.com'; 
                     } else if (platformLower.includes('gog')) {
-                        displayImage = 'https://imgur.com'; // Ретро-арт
+                        displayImage = 'https://unsplash.com'; 
                     } else {
-                        displayImage = 'https://imgur.com'; // Общая игровая заглушка
+                        displayImage = 'https://unsplash.com'; 
                     }
                     
                     const card = document.createElement('div');
