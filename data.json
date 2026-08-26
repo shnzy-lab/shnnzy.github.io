@@ -2,28 +2,30 @@
     {
         "id": 1,
         "title": "Epic Games Weekly Giveaway",
-        "image": "https://unsplash.com",
         "url": "https://epicgames.com",
         "platforms": "PC, Epic Games Store"
     },
     {
         "id": 2,
+        "title": "PlayStation Plus Free Games",
+        "url": "https://playstation.com",
+        "platforms": "PS4, PS5, PlayStation"
+    },
+    {
+        "id": 3,
         "title": "Steam Free-to-Claim Games",
-        "image": "https://unsplash.com",
         "url": "https://steampowered.com",
         "platforms": "PC, Steam"
     },
     {
-        "id": 3,
+        "id": 4,
         "title": "GOG Free Games Collection",
-        "image": "https://unsplash.com",
         "url": "https://gog.com",
         "platforms": "PC, GOG"
     },
     {
-        "id": 4,
+        "id": 5,
         "title": "Lenovo Legion Gaming Giveaways",
-        "image": "https://unsplash.com",
         "url": "https://lenovo.com",
         "platforms": "PC, Lenovo"
     }
