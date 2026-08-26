@@ -8,7 +8,7 @@
     <style>
         body {
             background-color: #1a0f0a;
-            /* Обновлённый, сочный вестерн-арт с каньоном и ковбоем */
+            /* Атмосферный сочный вестерн-пейзаж с каньоном в стиле RDR2 */
             background-image: linear-gradient(to bottom, rgba(15, 5, 2, 0.65), rgba(20, 10, 5, 0.98)), url('https://unsplash.com');
             background-size: cover;
             background-position: center;
@@ -60,17 +60,18 @@
             padding: 25px;
             text-align: center;
             position: relative;
-            /* Настоящая живая ковбойская анимация покачивания */
+            /* Живая ковбойская анимация покачивания */
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-origin: center;
             cursor: pointer;
         }
-        /* Взлёт плаката с разворотом от ветра */
+        /* Взлет и наклон плаката, как от ветра на Диком Западе */
         .card:hover {
             transform: translateY(-15px) scale(1.05) rotate(-2.5deg);
             box-shadow: 0 30px 50px rgba(231, 76, 60, 0.7), inset 0 0 40px rgba(0,0,0,0.1);
             border-color: #e74c3c;
         }
+        /* Соседние карточки качаются в другую сторону */
         .card:nth-child(even):hover {
             transform: translateY(-15px) scale(1.05) rotate(2.5deg);
         }
@@ -161,50 +162,56 @@
     </footer>
 
     <script>
-        // Добавляем хвостик ?v=случайное_число, чтобы полностью уничтожить старый кэш файла базы данных
-        fetch('data.json?v=' + Math.random())
-            .then(res => res.json())
-            .then(data => {
-                const grid = document.getElementById('games-grid');
-                if (!data || data.length === 0) {
-                    grid.innerHTML = '<p style="color:#f1c40f; text-align:center; grid-column: 1/-1; font-size: 1.5rem;">На горизонте тихо... Новых раздач пока нет.</p>';
-                    return;
-                }
-                
-                data.forEach(game => {
-                    const platformLower = game.platforms.toLowerCase();
-                    let displayImage = '';
-                    
-                    // Самые стабильные, открытые мировые ссылки на игровые обложки, которые прогрузятся везде
-                    if (platformLower.includes('epic')) {
-                        displayImage = 'https://unsplash.com'; 
-                    } else if (platformLower.includes('playstation') || platformLower.includes('ps')) {
-                        displayImage = 'https://unsplash.com'; 
-                    } else if (platformLower.includes('steam')) {
-                        displayImage = 'https://unsplash.com'; 
-                    } else if (platformLower.includes('gog')) {
-                        displayImage = 'https://unsplash.com'; 
-                    } else {
-                        displayImage = 'https://unsplash.com'; 
-                    }
-                    
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <div class="wanted-tag">WANTED</div>
-                        <div class="image-container">
-                            <img src="${displayImage}" alt="${game.title}">
-                        </div>
-                        <h3>${game.title}</h3>
-                        <div class="meta">Платформа: ${game.platforms}</div>
-                        <a href="${game.url}" target="_blank" class="btn">Забрать награду</a>
-                    `;
-                    grid.appendChild(card);
-                });
-            })
-            .catch(err => {
-                document.getElementById('games-grid').innerHTML = '<p style="color:#e74c3c; text-align:center; grid-column:1/-1;">Ошибка загрузки объявлений шерифа.</p>';
-            });
+        // Несгораемый список раздач с открытыми глобальными обложками
+        const data = [
+            {
+                "title": "Epic Games Weekly Giveaway",
+                "platforms": "PC, Epic Games Store",
+                "url": "https://epicgames.com",
+                "image": "https://unsplash.com"
+            },
+            {
+                "title": "PlayStation Plus Free Games",
+                "platforms": "PS4, PS5, PlayStation",
+                "url": "https://playstation.com",
+                "image": "https://unsplash.com"
+            },
+            {
+                "title": "Steam Free-to-Claim Games",
+                "platforms": "PC, Steam",
+                "url": "https://steampowered.com",
+                "image": "https://unsplash.com"
+            },
+            {
+                "title": "GOG Free Games Collection",
+                "platforms": "PC, GOG",
+                "url": "https://gog.com",
+                "image": "https://unsplash.com"
+            },
+            {
+                "title": "Lenovo Legion Gaming Giveaways",
+                "platforms": "PC, Lenovo",
+                "url": "https://lenovo.com",
+                "image": "https://unsplash.com"
+            }
+        ];
+
+        const grid = document.getElementById('games-grid');
+        
+        data.forEach(game => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="wanted-tag">WANTED</div>
+                <div class="image-container">
+                    <img src="${game.image}" alt="${game.title}">
+                </div>
+                <h3>${game.title}</h3>
+                <div class="meta">Платформа: ${game.platforms}</div>
+                <a href="${game.url}" target="_blank" class="btn">Забрать награду</a>
+            `;
+            grid.appendChild(card);
+        });
     </script>
 </body>
 </html>
