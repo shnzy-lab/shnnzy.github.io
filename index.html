@@ -8,10 +8,12 @@
     <style>
         body {
             background-color: #1a0f0a;
-            background-image: radial-gradient(rgba(0,0,0,0.3) 15%, transparent 15%), radial-gradient(rgba(0,0,0,0.3) 15%, transparent 15%);
-            background-size: 4px 4px;
-            background-position: 0 0, 2px 2px;
-            color: #e6c280;
+            /* Красочный вестерн-фон с закатом */
+            background-image: linear-gradient(to bottom, rgba(26, 15, 10, 0.7), rgba(26, 15, 10, 0.9)), url('https://unsplash.com');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #f1c40f;
             font-family: 'Montserrat', sans-serif;
             margin: 0;
             padding: 0;
@@ -19,24 +21,26 @@
         header {
             text-align: center;
             padding: 60px 20px;
-            background: linear-gradient(to bottom, #2d1910, #1a0f0a);
-            border-bottom: 4px double #d4af37;
-            position: relative;
+            background: linear-gradient(to bottom, rgba(45, 25, 16, 0.9), rgba(26, 15, 10, 0.8));
+            border-bottom: 4px double #e74c3c;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.8);
         }
         header h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            color: #d4af37;
+            font-size: 4rem;
+            color: #e74c3c;
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 3px 3px 0px #000;
+            letter-spacing: 6px;
+            text-shadow: 3px 3px 0px #000, 0 0 20px rgba(231, 76, 60, 0.4);
         }
         header p {
             font-style: italic;
-            color: #b38f4d;
-            font-size: 1.2rem;
-            margin: 10px 0 0 0;
+            color: #f39c12;
+            font-size: 1.3rem;
+            margin: 15px 0 0 0;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
         }
         .container {
             max-width: 1200px;
@@ -46,75 +50,96 @@
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
+            gap: 35px;
         }
         .card {
-            background: #f4eccf;
-            color: #2b1a09;
-            border: 8px solid #2b1a09;
-            border-image: url('https://imgur.com') 20 repeat; /* Имитация рамки */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 40px rgba(0,0,0,0.1);
-            padding: 20px;
+            background: #fcf3cf;
+            color: #2c3e50;
+            border: 6px solid #2b1a09;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.7), inset 0 0 40px rgba(0,0,0,0.15);
+            padding: 25px;
             text-align: center;
             position: relative;
-            transition: transform 0.2s;
+            /* Плавная живая анимация */
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transform-origin: center;
+            cursor: pointer;
         }
+        /* Анимация покачивания и взлета при наведении в стиле RDR2 */
         .card:hover {
-            transform: translateY(-5px) rotate(1deg);
+            transform: translateY(-12px) scale(1.03) rotate(1.5deg);
+            box-shadow: 0 25px 40px rgba(231, 76, 60, 0.5), inset 0 0 40px rgba(0,0,0,0.1);
+            border-color: #e74c3c;
         }
         .wanted-tag {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: bold;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-            border-bottom: 2px solid #2b1a09;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            border-bottom: 3px dashed #2c3e50;
             padding-bottom: 5px;
+        }
+        .image-container {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            border: 3px solid #2b1a09;
+            background: #1a0f0a;
+            position: relative;
         }
         .card img {
             width: 100%;
-            height: 180px;
+            height: 100%;
             object-fit: cover;
-            border: 3px solid #2b1a09;
-            filter: sepia(0.3) contrast(1.1);
+            transition: transform 0.5s ease;
+        }
+        .card:hover img {
+            transform: scale(1.1); /* Картинка слегка увеличивается внутри рамки */
         }
         .card h3 {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             margin: 15px 0 10px 0;
             height: 55px;
             overflow: hidden;
+            color: #111;
+            font-weight: 700;
         }
         .meta {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: bold;
             text-transform: uppercase;
-            color: #7a1f1d;
-            margin-bottom: 15px;
+            color: #c0392b;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
         }
         .btn {
             display: inline-block;
-            background: #7a1f1d;
-            color: #f4eccf;
-            padding: 12px 25px;
+            background: #c0392b;
+            color: #fff;
+            padding: 14px 30px;
             text-decoration: none;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1px;
             border: 2px solid #2b1a09;
-            box-shadow: 3px 3px 0px #2b1a09;
-            transition: 0.1s;
+            box-shadow: 4px 4px 0px #2b1a09;
+            transition: all 0.2s ease;
         }
-        .btn:hover {
-            background: #9e2a2b;
-            box-shadow: 1px 1px 0px #2b1a09;
+        .card:hover .btn {
+            background: #e74c3c;
+            box-shadow: 2px 2px 0px #2b1a09;
             transform: translate(2px, 2px);
         }
         footer {
             text-align: center;
-            padding: 40px;
-            color: #664d33;
+            padding: 50px;
+            color: #bdc3c7;
             font-size: 0.9rem;
-            border-top: 1px solid #2d1910;
+            background: rgba(26, 15, 10, 0.9);
+            border-top: 3px solid #e74c3c;
+            margin-top: 60px;
         }
     </style>
 </head>
@@ -126,9 +151,7 @@
     </header>
 
     <div class="container">
-        <div class="grid" id="games-grid">
-            <!-- Сюда робот будет вставлять карточки с играми -->
-        </div>
+        <div class="grid" id="games-grid"></div>
     </div>
 
     <footer>
@@ -141,27 +164,11 @@
             .then(res => res.json())
             .then(data => {
                 const grid = document.getElementById('games-grid');
-                if (data.length === 0) {
-                    grid.innerHTML = '<p style="color:#b38f4d; text-align:center; grid-column: 1/-1;">На горизонте тихо... Новых раздач пока нет.</p>';
+                if (!data || data.length === 0) {
+                    grid.innerHTML = '<p style="color:#f1c40f; text-align:center; grid-column: 1/-1; font-size: 1.5rem;">На горизонте тихо... Новых раздач пока нет.</p>';
                     return;
                 }
                 
                 data.forEach(game => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <div class="wanted-tag">WANTED</div>
-                        <img src="${game.image}" alt="${game.title}">
-                        <h3>${game.title}</h3>
-                        <div class="meta">Платформа: ${game.platforms}</div>
-                        <a href="${game.url}" target="_blank" class="btn">Забрать награду</a>
-                    `;
-                    grid.appendChild(card);
-                });
-            })
-            .catch(err => {
-                document.getElementById('games-grid').innerHTML = '<p style="color:#7a1f1d;">Ошибка загрузки объявлений.</p>';
-            });
-    </script>
-</body>
-</html>
+                    // Исправление картинок: если у внешнего API ломается ссылка, подставляем красивую заглушку по теме платформы
+                    let fallbackImage = '
