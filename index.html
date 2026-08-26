@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guns & Games | Дикий Запад Халявы</title>
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a0f0a;
+            background-image: radial-gradient(rgba(0,0,0,0.3) 15%, transparent 15%), radial-gradient(rgba(0,0,0,0.3) 15%, transparent 15%);
+            background-size: 4px 4px;
+            background-position: 0 0, 2px 2px;
+            color: #e6c280;
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(to bottom, #2d1910, #1a0f0a);
+            border-bottom: 4px double #d4af37;
+            position: relative;
+        }
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: #d4af37;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 3px 3px 0px #000;
+        }
+        header p {
+            font-style: italic;
+            color: #b38f4d;
+            font-size: 1.2rem;
+            margin: 10px 0 0 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: #f4eccf;
+            color: #2b1a09;
+            border: 8px solid #2b1a09;
+            border-image: url('https://imgur.com') 20 repeat; /* Имитация рамки */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 40px rgba(0,0,0,0.1);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px) rotate(1deg);
+        }
+        .wanted-tag {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #2b1a09;
+            padding-bottom: 5px;
+        }
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border: 3px solid #2b1a09;
+            filter: sepia(0.3) contrast(1.1);
+        }
+        .card h3 {
+            font-size: 1.4rem;
+            margin: 15px 0 10px 0;
+            height: 55px;
+            overflow: hidden;
+        }
+        .meta {
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #7a1f1d;
+            margin-bottom: 15px;
+        }
+        .btn {
+            display: inline-block;
+            background: #7a1f1d;
+            color: #f4eccf;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid #2b1a09;
+            box-shadow: 3px 3px 0px #2b1a09;
+            transition: 0.1s;
+        }
+        .btn:hover {
+            background: #9e2a2b;
+            box-shadow: 1px 1px 0px #2b1a09;
+            transform: translate(2px, 2px);
+        }
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #664d33;
+            font-size: 0.9rem;
+            border-top: 1px solid #2d1910;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>WANTED GAMES</h1>
+        <p>Живыми или мёртвыми. Забирай лучшие раздачи первыми.</p>
+    </header>
+
+    <div class="container">
+        <div class="grid" id="games-grid">
+            <!-- Сюда робот будет вставлять карточки с играми -->
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Guns & Games. Работает автоматически под управлением шерифа GitHub.</p>
+    </footer>
+
+    <script>
+        // Загружаем актуальные игры из файла базы данных
+        fetch('data.json')
+            .then(res => res.json())
+            .then(data => {
+                const grid = document.getElementById('games-grid');
+                if (data.length === 0) {
+                    grid.innerHTML = '<p style="color:#b38f4d; text-align:center; grid-column: 1/-1;">На горизонте тихо... Новых раздач пока нет.</p>';
+                    return;
+                }
+                
+                data.forEach(game => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="wanted-tag">WANTED</div>
+                        <img src="${game.image}" alt="${game.title}">
+                        <h3>${game.title}</h3>
+                        <div class="meta">Платформа: ${game.platforms}</div>
+                        <a href="${game.url}" target="_blank" class="btn">Забрать награду</a>
+                    `;
+                    grid.appendChild(card);
+                });
+            })
+            .catch(err => {
+                document.getElementById('games-grid').innerHTML = '<p style="color:#7a1f1d;">Ошибка загрузки объявлений.</p>';
+            });
+    </script>
+</body>
+</html>
