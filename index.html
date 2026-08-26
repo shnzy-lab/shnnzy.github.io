@@ -7,9 +7,9 @@
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
         body {
-            background-color: #1a0f0a;
-            /* Атмосферный сочный вестерн-пейзаж с каньоном в стиле RDR2 */
-            background-image: linear-gradient(to bottom, rgba(15, 5, 2, 0.65), rgba(20, 10, 5, 0.98)), url('https://unsplash.com');
+            background-color: #150904;
+            /* Полноценный, сочный вестерн-пейзаж, который не блокируется браузерами */
+            background-image: linear-gradient(to bottom, rgba(21, 9, 4, 0.7), rgba(21, 9, 4, 0.95)), url('https://unsplash.com');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -21,7 +21,7 @@
         header {
             text-align: center;
             padding: 60px 20px;
-            background: linear-gradient(to bottom, rgba(40, 15, 10, 0.95), rgba(15, 5, 2, 0.85));
+            background: linear-gradient(to bottom, rgba(40, 15, 10, 0.95), rgba(21, 9, 4, 0.9));
             border-bottom: 4px double #e74c3c;
             box-shadow: 0 8px 30px rgba(0,0,0,0.9);
         }
@@ -60,18 +60,18 @@
             padding: 25px;
             text-align: center;
             position: relative;
-            /* Живая ковбойская анимация покачивания */
+            /* Плавная вестерн-анимация покачивания */
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             transform-origin: center;
             cursor: pointer;
         }
-        /* Взлет и наклон плаката, как от ветра на Диком Западе */
+        /* Эффект взлетающего от ветра объявления WANTED */
         .card:hover {
             transform: translateY(-15px) scale(1.05) rotate(-2.5deg);
             box-shadow: 0 30px 50px rgba(231, 76, 60, 0.7), inset 0 0 40px rgba(0,0,0,0.1);
             border-color: #e74c3c;
         }
-        /* Соседние карточки качаются в другую сторону */
+        /* Чередуем наклон для большей хаотичности доски объявлений */
         .card:nth-child(even):hover {
             transform: translateY(-15px) scale(1.05) rotate(2.5deg);
         }
@@ -140,7 +140,7 @@
             padding: 50px;
             color: #bdc3c7;
             font-size: 0.9rem;
-            background: rgba(15, 5, 2, 0.95);
+            background: rgba(21, 9, 4, 0.95);
             border-top: 3px solid #e74c3c;
             margin-top: 60px;
         }
@@ -154,42 +154,44 @@
     </header>
 
     <div class="container">
-        <div class="grid" id="games-grid"></div>
+        <div class="grid" id="games-grid">
+            <!-- Сюда скрипт мгновенно выведет готовые карточки -->
+        </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 Guns & Games. Работает автоматически под управлением шерифа GitHub.</p>
+        <p>&copy; 2026 Guns & Games. Блог на Диком Западе интернета под присмотром GitHub.</p>
     </footer>
 
     <script>
-        // Несгораемый список раздач с открытыми глобальными обложками
+        // Статический массив с ПРЯМЫМИ ссылками на раздачи и 100% рабочими картинками
         const data = [
             {
-                "title": "Epic Games Weekly Giveaway",
+                "title": "Epic Games Weekly Freebies",
                 "platforms": "PC, Epic Games Store",
                 "url": "https://epicgames.com",
                 "image": "https://unsplash.com"
             },
             {
-                "title": "PlayStation Plus Free Games",
+                "title": "PlayStation Plus Monthly Games",
                 "platforms": "PS4, PS5, PlayStation",
                 "url": "https://playstation.com",
                 "image": "https://unsplash.com"
             },
             {
-                "title": "Steam Free-to-Claim Games",
+                "title": "Steam Free to Keep Offers",
                 "platforms": "PC, Steam",
                 "url": "https://steampowered.com",
                 "image": "https://unsplash.com"
             },
             {
-                "title": "GOG Free Games Collection",
+                "title": "GOG Free Games Giveaway",
                 "platforms": "PC, GOG",
                 "url": "https://gog.com",
                 "image": "https://unsplash.com"
             },
             {
-                "title": "Lenovo Legion Gaming Giveaways",
+                "title": "Lenovo Legion Keys & Deals",
                 "platforms": "PC, Lenovo",
                 "url": "https://lenovo.com",
                 "image": "https://unsplash.com"
