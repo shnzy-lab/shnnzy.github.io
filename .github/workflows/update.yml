@@ -4,65 +4,31 @@ on:
     - cron: '0 */3 * * *' # Запуск каждые 3 часа
   workflow_dispatch: # Позволяет запускать вручную кнопку в панели
 
+permissions:
+  contents: write
+
 jobs:
   update-blog:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-python-version: '3.x'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
 
-    - name: Install dependencies
-      run: pip install requests
+      - name: Install dependencies
+        run: pip install requests
 
-    - name: Run Robot Script
-      env:
-        GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
-      run: |
-        python - << 'EOF'
-        import os
-        import json
-        import requests
+      - name: Run update script
+        run: python scripts/update_games.py
 
-        API_URL = "https://gamerpower.com"
-        
-        try:
-            response = requests.get(API_URL)
-            if response.status_code != 200:
-                print("Ошибка запроса к API")
-                exit(0)
-            
-            api_games = response.json()
-        except Exception as e:
-            print(f"Ошибка: {e}")
-            exit(0)
-
-        current_games = []
-        # Фильтруем только активные раздачи ПК игр (Steam, Epic Games, GOG, Itch.io)
-        for g in api_games:
-            if g.get('status') == 'Active' and any(p in g.get('platforms', '').lower() for p in ['pc', 'steam', 'epic', 'gog']):
-                current_games.append({
-                    "id": g.get('id'),
-                    "title": g.get('title'),
-                    "image": g.get('image'),
-                    "url": g.get('open_giveaway_url'),
-                    "platforms": g.get('platforms')
-                })
-
-        # Записываем в базу данных
-        with open('data.json', 'w', encoding='utf-8') as f:
-            json.dump(current_games[:20], f, ensure_ascii=False, indent=4) # Берём топ-20 свежих раздач
-
-        print("База данных успешно обновлена!")
-        EOF
-
-    - name: Commit and Push Changes
-      run: |
-        git config --global user.name "shnzy-lab-bot"
-        git config --global user.email "bot@github.com"
-        git add data.json
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Шериф обновил список раздач [skip ci]" && git push https://x-access-token:${{ secrets.API_TOKEN_GITHUB }}@://github.com{{ github.repository }}.git HEAD:main)
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "shnzy-lab-bot"
+          git config --global user.email "bot@github.com"
+          git add data.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Шериф обновил список раздач [skip ci]"
+          git push
