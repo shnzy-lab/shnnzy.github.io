@@ -1,217 +1,697 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guns & Games | Дикий Запад Халявы</title>
-    <link href="https://googleapis.com" rel="stylesheet">
-    <style>
-        body {
-            background-color: #1a0f0a;
-            /* Красочный вестерн-пейзаж с закатным каньоном */
-            background-image: linear-gradient(to bottom, rgba(20, 8, 4, 0.65), rgba(20, 8, 4, 0.98)), url('https://unsplash.com');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #f1c40f;
-            font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(to bottom, rgba(45, 15, 10, 0.95), rgba(20, 8, 4, 0.9));
-            border-bottom: 4px double #e74c3c;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.9);
-        }
-        header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 4.5rem;
-            color: #e74c3c;
-            margin: 0;
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            text-shadow: 3px 3px 0px #000, 0 0 25px rgba(231, 76, 60, 0.6);
-        }
-        header p {
-            font-style: italic;
-            color: #f39c12;
-            font-size: 1.4rem;
-            margin: 15px 0 0 0;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px #000;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 40px;
-        }
-        .card {
-            background: #fcf3cf;
-            color: #2c3e50;
-            border: 6px solid #2b1a09;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.8), inset 0 0 40px rgba(0,0,0,0.15);
-            padding: 25px;
-            text-align: center;
-            position: relative;
-            /* Плавная вестерн-анимация покачивания */
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-origin: center;
-            cursor: pointer;
-        }
-        /* Взлет плаката при наведении */
-        .card:hover {
-            transform: translateY(-15px) scale(1.05) rotate(-2.5deg);
-            box-shadow: 0 30px 50px rgba(231, 76, 60, 0.7), inset 0 0 40px rgba(0,0,0,0.1);
-            border-color: #e74c3c;
-        }
-        /* Соседние карточки отклоняются в другую сторону */
-        .card:nth-child(even):hover {
-            transform: translateY(-15px) scale(1.05) rotate(2.5deg);
-        }
-        .wanted-tag {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            font-weight: bold;
-            letter-spacing: 4px;
-            margin-bottom: 15px;
-            color: #2c3e50;
-            border-bottom: 3px dashed #2c3e50;
-            padding-bottom: 5px;
-        }
-        .image-container {
-            width: 100%;
-            height: 180px;
-            overflow: hidden;
-            border: 3px solid #2b1a09;
-            background: #1a0f0a;
-        }
-        .card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-        .card:hover img {
-            transform: scale(1.15);
-        }
-        .card h3 {
-            font-size: 1.3rem;
-            margin: 15px 0 10px 0;
-            height: 55px;
-            overflow: hidden;
-            color: #111;
-            font-weight: 700;
-        }
-        .meta {
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            color: #c0392b;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-        .btn {
-            display: inline-block;
-            background: #c0392b;
-            color: #fff;
-            padding: 14px 30px;
-            text-decoration: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 2px solid #2b1a09;
-            box-shadow: 4px 4px 0px #2b1a09;
-            transition: all 0.2s ease;
-        }
-        .card:hover .btn {
-            background: #e74c3c;
-            box-shadow: 2px 2px 0px #2b1a09;
-            transform: translate(2px, 2px);
-        }
-        footer {
-            text-align: center;
-            padding: 50px;
-            color: #bdc3c7;
-            font-size: 0.9rem;
-            background: rgba(20, 8, 4, 0.95);
-            border-top: 3px solid #e74c3c;
-            margin-top: 60px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>САЛУН РАЗДАЧ — доска розыска бесплатных игр</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rye&family=Special+Elite&family=Oswald:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root{
+  --parchment:#e7d6a8;
+  --parchment-dark:#d8c491;
+  --parchment-shadow:#b39a63;
+  --leather:#5c3a21;
+  --leather-dark:#3a2415;
+  --leather-darker:#2a1a0e;
+  --ink:#2a1c11;
+  --rust:#9c3b2e;
+  --rust-dark:#732a20;
+  --gold:#c79a3a;
+  --gold-light:#e0be5f;
+  --font-display:'Rye', serif;
+  --font-body:'Special Elite', 'Courier New', monospace;
+  --font-ui:'Oswald', sans-serif;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:var(--font-body);
+  color:var(--ink);
+  background:var(--leather-darker);
+  overflow-x:hidden;
+}
+
+/* ============ GRAIN OVERLAY ============ */
+.grain-overlay{
+  position:fixed; inset:0; z-index:999; pointer-events:none;
+  opacity:0.06; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.grain-overlay.vignette{
+  opacity:1; mix-blend-mode:multiply; background-image:none;
+  background:radial-gradient(ellipse at center, rgba(0,0,0,0) 45%, rgba(20,10,5,0.55) 100%);
+}
+
+/* ============ SKY / LIVING BACKGROUND (real time of day) ============ */
+.sky{ position:fixed; inset:0; z-index:0; overflow:hidden; }
+.sky-layer{ position:absolute; inset:0; transition:opacity 3s ease; }
+
+.celestial{
+  position:absolute; left:50%; top:10%; width:110px; height:110px; margin-left:-55px;
+  border-radius:50%;
+  transition:top 3s ease, box-shadow 3s ease, width 3s ease, height 3s ease, margin 3s ease, background 2.5s ease;
+}
+
+.stars{ position:absolute; inset:0 0 40% 0; opacity:0; transition:opacity 2.5s ease; }
+body.time-night .stars{ opacity:1; }
+.star{ position:absolute; width:2px; height:2px; border-radius:50%; background:#f5eccf; animation:twinkle 3.4s ease-in-out infinite; }
+@keyframes twinkle{ 0%,100%{opacity:0.25;} 50%{opacity:1;} }
+
+.clouds{ position:absolute; inset:0; opacity:1; transition:opacity 2.5s ease; }
+body.time-night .clouds{ opacity:0.25; }
+.cloud{ position:absolute; background:rgba(255,250,235,0.55); border-radius:50px; filter:blur(1px); }
+.cloud::before,.cloud::after{ content:''; position:absolute; background:inherit; border-radius:50%; }
+.c1{width:180px; height:40px; top:12%; left:-20%; animation:drift 70s linear infinite;}
+.c1::before{width:80px; height:60px; top:-30px; left:20px;}
+.c1::after{width:100px; height:50px; top:-20px; left:90px;}
+.c2{width:120px; height:30px; top:22%; left:-25%; animation:drift 95s linear infinite; animation-delay:-30s; opacity:0.8;}
+.c2::before{width:60px; height:40px; top:-20px; left:15px;}
+.c3{width:150px; height:34px; top:8%; left:-30%; animation:drift 120s linear infinite; animation-delay:-60s; opacity:0.6;}
+.c3::before{width:70px; height:44px; top:-24px; left:30px;}
+@keyframes drift{ from{transform:translateX(0);} to{transform:translateX(140vw);} }
+
+.birds{ position:absolute; inset:0; opacity:1; transition:opacity 2s ease; }
+body.time-night .birds{ opacity:0; }
+.bird{position:absolute; opacity:0.75;}
+.bird svg{width:26px; height:14px; display:block;}
+.b1{ top:18%; left:-5%; animation:fly1 26s linear infinite; }
+.b2{ top:26%; left:-8%; animation:fly1 34s linear infinite; animation-delay:-8s;}
+.b3{ top:15%; left:-10%; animation:fly1 30s linear infinite; animation-delay:-18s;}
+@keyframes fly1{
+  0%{ transform:translate(0,0);} 25%{ transform:translate(35vw,-14px);}
+  50%{ transform:translate(70vw,6px);} 75%{ transform:translate(105vw,-10px);}
+  100%{ transform:translate(140vw,0);}
+}
+.bird svg path{ animation:flap 0.5s ease-in-out infinite alternate; transform-origin:center; }
+@keyframes flap{ from{ transform:scaleY(1);} to{ transform:scaleY(0.4);} }
+
+.fireflies{ position:absolute; inset:0; opacity:0; transition:opacity 2.5s ease; }
+body.time-night .fireflies{ opacity:1; }
+.firefly{
+  position:absolute; width:3px; height:3px; border-radius:50%;
+  background:#d9ef7a; box-shadow:0 0 6px 2px rgba(217,239,122,0.9);
+  animation:flicker 4s ease-in-out infinite;
+}
+@keyframes flicker{ 0%,100%{ opacity:0.15; transform:translateY(0);} 50%{ opacity:0.9; transform:translateY(-14px);} }
+
+.mountains{position:absolute; left:0; right:0; bottom:0;}
+.layer-3{height:34vh; background:linear-gradient(180deg,#6d4a3d,#4a3327); clip-path:polygon(0% 100%,0% 60%,8% 45%,17% 62%,27% 30%,38% 58%,48% 40%,58% 65%,68% 35%,79% 55%,89% 25%,100% 50%,100% 100%); opacity:0.55; transition:background 2.5s ease;}
+.layer-2{height:26vh; background:linear-gradient(180deg,#4f3524,#33221a); clip-path:polygon(0% 100%,0% 70%,12% 50%,24% 68%,35% 42%,47% 66%,59% 38%,71% 60%,83% 45%,100% 62%,100% 100%); opacity:0.75; transition:background 2.5s ease;}
+.layer-1{height:16vh; background:linear-gradient(180deg,#2c1c13,#1c1108); clip-path:polygon(0% 100%,0% 55%,15% 78%,30% 50%,45% 80%,60% 48%,75% 76%,90% 52%,100% 70%,100% 100%);}
+
+.cacti{ position:absolute; bottom:5vh; left:0; right:0; height:14vh; pointer-events:none; }
+.cactus{ position:absolute; bottom:0; opacity:0.85; }
+.cactus svg{ display:block; height:12vh; width:auto; }
+.cac1{ left:6%; }
+.cac2{ left:88%; height:16vh; }
+.cac3{ left:47%; opacity:0.5; }
+
+.dust{position:absolute; inset:0; overflow:hidden;}
+.mote{
+  position:absolute; bottom:-10px; width:3px; height:3px; border-radius:50%;
+  background:rgba(224,190,95,0.5); animation:floatup linear infinite;
+}
+@keyframes floatup{ 0%{ transform:translate(0,0); opacity:0;} 10%{ opacity:0.7;} 100%{ transform:translate(20px,-100vh); opacity:0;} }
+
+.tumbleweed{ position:absolute; bottom:8vh; left:-8vw; width:34px; height:34px; animation:roll 16s linear infinite; }
+.tumbleweed svg{width:100%; height:100%;}
+@keyframes roll{ 0%{ transform:translateX(0) rotate(0deg);} 100%{ transform:translateX(120vw) rotate(1080deg);} }
+
+@media (prefers-reduced-motion: reduce){
+  .cloud,.bird,.bird svg path,.mote,.tumbleweed,.firefly,.star,.wood-sign{ animation:none !important; }
+}
+
+/* ============ LAYOUT ============ */
+.content{ position:relative; z-index:1; }
+
+.hero{
+  min-height:92vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:6vh 5vw;
+}
+.wood-sign{
+  background:
+    repeating-linear-gradient(90deg, #6b4423 0 14px, #613d1e 14px 28px),
+    linear-gradient(180deg,#6b4423,#4a2f18);
+  border:10px solid var(--leather-dark);
+  box-shadow:0 18px 40px rgba(0,0,0,0.55), inset 0 0 40px rgba(0,0,0,0.4);
+  border-radius:6px;
+  padding:3.2rem 3rem 3.6rem;
+  max-width:820px;
+  position:relative;
+  transform-origin:top center;
+  animation:signsway 7s ease-in-out infinite;
+}
+@keyframes signsway{ 0%,100%{transform:rotate(-0.6deg);} 50%{transform:rotate(0.5deg);} }
+.wood-sign::before, .wood-sign::after{
+  content:''; position:absolute; width:22px; height:22px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #cfc9b8, #605a44 70%, #2c281c);
+  box-shadow:0 3px 6px rgba(0,0,0,0.6); top:-11px;
+}
+.wood-sign::before{ left:20px; }
+.wood-sign::after{ right:20px; }
+
+.lantern{ position:absolute; top:-38px; right:46px; width:20px; height:30px; }
+.lantern .hook{ position:absolute; top:0; left:9px; width:2px; height:10px; background:#3a2b1a; }
+.lantern .body{
+  position:absolute; top:9px; left:2px; width:16px; height:18px; border-radius:3px;
+  background:linear-gradient(180deg,#8a6a2a,#4a3410); border:1px solid #2a1c0c;
+  box-shadow:0 0 6px 2px rgba(224,190,95,0.15);
+  transition:box-shadow 2.5s ease, background 2.5s ease;
+}
+.lantern .glow{
+  position:absolute; top:10px; left:4px; width:12px; height:14px; border-radius:2px;
+  background:#3a2c14; transition:background 2.5s ease, box-shadow 2.5s ease;
+}
+body.time-night .lantern .glow, body.time-dusk .lantern .glow{
+  background:#ffdd8a; box-shadow:0 0 14px 6px rgba(255,221,138,0.75);
+}
+
+.site-title{
+  font-family:var(--font-display); font-size:clamp(2.6rem, 8vw, 5.2rem);
+  color:var(--gold-light); letter-spacing:0.08em; margin:0 0 0.6rem;
+  text-shadow:0 3px 0 #1c1006, 0 6px 18px rgba(0,0,0,0.6);
+}
+.tagline{
+  font-family:var(--font-ui); font-style:italic; font-size:clamp(0.95rem,2.4vw,1.25rem);
+  color:var(--parchment); letter-spacing:0.03em; margin:0 0 1.6rem; opacity:0.9;
+}
+.clock-row{
+  display:flex; flex-wrap:wrap; gap:0.8rem; align-items:center; justify-content:center;
+  border-top:1px dashed rgba(224,190,95,0.4); padding-top:0.9rem; margin-top:0.4rem;
+}
+.clock{ font-family:var(--font-body); color:var(--gold-light); font-size:0.9rem; letter-spacing:0.06em; }
+.sound-toggle{
+  font-family:var(--font-ui); font-weight:600; letter-spacing:0.05em; font-size:0.72rem; text-transform:uppercase;
+  background:rgba(42,26,14,0.5); color:var(--parchment); border:1px solid var(--gold);
+  padding:0.4rem 0.8rem; border-radius:16px; cursor:pointer; transition:all .2s ease;
+}
+.sound-toggle:hover{ background:var(--gold); color:var(--leather-darker); }
+.sound-toggle.on{ background:var(--rust); border-color:var(--gold-light); color:#fbe9d2; }
+
+.cta-scroll{
+  margin-top:2.6rem; font-family:var(--font-ui); font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--parchment); text-decoration:none; border:2px solid var(--gold); padding:0.85rem 1.8rem;
+  border-radius:2px; background:rgba(42,26,14,0.35); transition:all .25s ease; animation:bob 2.4s ease-in-out infinite;
+}
+.cta-scroll:hover{ background:var(--gold); color:var(--leather-darker); border-color:var(--gold);}
+@keyframes bob{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);} }
+
+/* ============ FILTER BELT ============ */
+.filter-belt{
+  position:sticky; top:0; z-index:50; display:flex; flex-wrap:wrap; gap:0.6rem; justify-content:center;
+  padding:1rem 1.2rem; background:linear-gradient(180deg, rgba(42,26,14,0.96), rgba(42,26,14,0.9));
+  border-bottom:4px double var(--gold); backdrop-filter:blur(2px);
+}
+.filter-badge{
+  font-family:var(--font-ui); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; font-size:0.82rem;
+  background:var(--leather); color:var(--parchment); border:1px solid var(--gold); padding:0.55rem 1.1rem;
+  border-radius:20px; cursor:pointer; transition:all .2s ease;
+}
+.filter-badge:hover{ background:var(--leather-dark); transform:translateY(-2px); }
+.filter-badge.active{ background:var(--rust); border-color:var(--gold-light); color:#fff2d9; box-shadow:0 0 12px rgba(156,59,46,0.7);}
+
+/* ============ BOARD ============ */
+.board{
+  padding:3.2rem 5vw 5rem;
+  background:radial-gradient(ellipse at top, rgba(90,60,30,0.35), transparent 60%), var(--leather-darker);
+  min-height:60vh;
+}
+.status-line{ text-align:center; font-family:var(--font-ui); letter-spacing:0.08em; color:var(--gold-light); margin-bottom:2rem; min-height:1.4em; }
+.status-line.error{ color:#e08a6f; }
+
+.poster-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:2.4rem 2rem; max-width:1400px; margin:0 auto; }
+
+.poster{
+  position:relative;
+  background:radial-gradient(circle at 20% 15%, rgba(150,110,50,0.18), transparent 40%),
+             radial-gradient(circle at 85% 80%, rgba(120,80,30,0.15), transparent 45%), var(--parchment);
+  border:1px solid var(--parchment-shadow);
+  box-shadow:0 10px 22px rgba(0,0,0,0.45), inset 0 0 30px rgba(120,90,40,0.15);
+  padding:2.2rem 1.5rem 1.6rem;
+  clip-path:polygon(1% 2%, 8% 0%, 22% 1%, 40% 0%, 60% 1.5%, 78% 0%, 93% 1%, 100% 3%, 99% 15%, 100% 40%, 99% 62%, 100% 82%, 98% 97%, 88% 100%, 70% 99%, 50% 100%, 30% 99%, 12% 100%, 2% 98%, 0% 80%, 1% 55%, 0% 30%, 1% 15%);
+  transition:transform .35s ease, box-shadow .35s ease;
+  display:flex; flex-direction:column; gap:0.7rem;
+}
+.poster:nth-child(3n+1){ transform:rotate(-1.6deg); }
+.poster:nth-child(3n+2){ transform:rotate(1.1deg); }
+.poster:nth-child(3n){ transform:rotate(-0.6deg); }
+.poster:hover{ transform:rotate(0deg) translateY(-6px) scale(1.02); box-shadow:0 20px 34px rgba(0,0,0,0.55);}
+
+.pin{
+  position:absolute; top:-9px; left:50%; margin-left:-8px; width:16px; height:16px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #f2d4a8, var(--rust) 70%, #5c1c14);
+  box-shadow:0 3px 5px rgba(0,0,0,0.55); z-index:2;
+}
+
+.stamp{
+  position:absolute; top:14px; right:14px; font-family:var(--font-ui); font-weight:700; font-size:0.65rem;
+  letter-spacing:0.08em; text-transform:uppercase; border:2px solid var(--rust); color:var(--rust);
+  padding:0.3rem 0.55rem; border-radius:4px; transform:rotate(12deg); opacity:0.85; background:rgba(231,214,168,0.4);
+}
+.stamp-steam{ border-color:#2a5c8a; color:#2a5c8a; }
+.stamp-epic{ border-color:#3a3a3a; color:#3a3a3a; }
+.stamp-gog{ border-color:#7a3fa0; color:#7a3fa0; }
+.stamp-playstation{ border-color:#1f4fa0; color:#1f4fa0; }
+.stamp-lenovo{ border-color:#a0221f; color:#a0221f; }
+
+.wanted-label{ font-family:var(--font-display); font-size:1.5rem; text-align:center; letter-spacing:0.06em; color:var(--ink); margin:0.4rem 0 0.2rem; }
+.photo-frame{ border:6px solid #f4ecd6; box-shadow:0 0 0 1px var(--parchment-shadow), 0 6px 12px rgba(0,0,0,0.3); overflow:hidden; aspect-ratio:16/10; background:#c9b98a; }
+.photo-frame img{ width:100%; height:100%; object-fit:cover; display:block; filter:sepia(0.75) contrast(1.08) brightness(0.92) saturate(0.9); transition:filter .5s ease, transform .5s ease; }
+.poster:hover .photo-frame img{ filter:none; transform:scale(1.04); }
+.photo-fallback{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:2.4rem; color:var(--leather); background:#c9b98a; }
+
+.poster-title{ font-family:var(--font-display); font-size:1.3rem; text-align:center; margin:0.2rem 0 0; color:var(--leather-darker); line-height:1.25; }
+.poster-desc{ font-size:0.85rem; line-height:1.5; color:#3d2c1a; margin:0; text-align:center; min-height:2.6em; }
+.poster-meta{ display:flex; flex-direction:column; gap:0.3rem; font-family:var(--font-ui); font-size:0.78rem; letter-spacing:0.02em; color:var(--leather-dark); border-top:1px dashed var(--parchment-shadow); padding-top:0.6rem; margin-top:0.2rem; }
+.claim-btn{
+  margin-top:0.6rem; text-align:center; text-decoration:none; font-family:var(--font-ui); font-weight:700;
+  letter-spacing:0.06em; text-transform:uppercase; font-size:0.82rem; background:var(--rust); color:#fbe9d2;
+  padding:0.7rem 1rem; border-radius:2px; border:1px solid var(--rust-dark); box-shadow:0 4px 0 var(--rust-dark);
+  transition:all .15s ease;
+}
+.claim-btn:hover{ background:var(--rust-dark); transform:translateY(2px); box-shadow:0 2px 0 var(--rust-dark); }
+.claim-btn:active{ transform:translateY(4px); box-shadow:none; }
+
+.empty-state, .loading-state{ grid-column:1/-1; text-align:center; color:var(--parchment); font-family:var(--font-ui); padding:3rem 1rem; letter-spacing:0.04em; }
+.loading-state .spinner{ width:34px; height:34px; margin:0 auto 1rem; border-radius:50%; border:3px solid rgba(224,190,95,0.25); border-top-color:var(--gold-light); animation:spin 0.9s linear infinite; }
+@media (prefers-reduced-motion: reduce){ .loading-state .spinner{ animation:none; } }
+@keyframes spin{ to{ transform:rotate(360deg);} }
+
+.retry-btn{
+  margin-top:1rem; font-family:var(--font-ui); font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+  background:transparent; color:var(--gold-light); border:1px solid var(--gold-light); padding:0.55rem 1.2rem;
+  border-radius:20px; cursor:pointer;
+}
+.retry-btn:hover{ background:var(--gold-light); color:var(--leather-darker); }
+
+.footer{ text-align:center; padding:1.6rem 1rem 2.4rem; font-family:var(--font-ui); font-size:0.78rem; color:rgba(231,214,168,0.6); letter-spacing:0.03em; }
+.footer a{ color:var(--gold-light); }
+
+@media (max-width:520px){
+  .wood-sign{ padding:2.2rem 1.4rem 2.6rem; }
+  .filter-belt{ gap:0.4rem; padding:0.8rem; }
+  .filter-badge{ font-size:0.72rem; padding:0.45rem 0.8rem; }
+}
+</style>
 </head>
 <body>
 
-    <header>
-        <h1>WANTED GAMES</h1>
-        <p>Живыми или мёртвыми. Забирай лучшие раздачи первыми.</p>
-    </header>
+<div class="grain-overlay"></div>
+<div class="grain-overlay vignette"></div>
 
-    <div class="container">
-        <div class="grid" id="games-grid"></div>
+<div class="sky" id="sky">
+  <div class="sky-layer" id="skyA"></div>
+  <div class="sky-layer" id="skyB"></div>
+  <div class="stars" id="stars"></div>
+  <div class="celestial" id="celestial"></div>
+  <div class="clouds">
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+  </div>
+  <div class="birds">
+    <div class="bird b1"><svg viewBox="0 0 24 12"><path d="M0 6 Q6 0 12 6 Q18 0 24 6" stroke="#2a1c11" stroke-width="1.6" fill="none"/></svg></div>
+    <div class="bird b2"><svg viewBox="0 0 24 12"><path d="M0 6 Q6 0 12 6 Q18 0 24 6" stroke="#2a1c11" stroke-width="1.6" fill="none"/></svg></div>
+    <div class="bird b3"><svg viewBox="0 0 24 12"><path d="M0 6 Q6 0 12 6 Q18 0 24 6" stroke="#2a1c11" stroke-width="1.6" fill="none"/></svg></div>
+  </div>
+  <div class="fireflies" id="fireflies"></div>
+  <div class="mountains layer-3"></div>
+  <div class="mountains layer-2"></div>
+  <div class="cacti">
+    <div class="cactus cac1"><svg viewBox="0 0 40 80" fill="#1c1108"><path d="M18 80 L18 30 Q18 20 26 20 Q30 20 30 26 L30 40 L34 40 L34 26 Q34 14 24 14 L24 4 Q24 0 20 0 Q16 0 16 4 L16 30 L10 30 Q4 30 4 24 L4 12 L0 12 L0 24 Q0 34 10 34 L16 34 L16 80 Z"/></svg></div>
+    <div class="cactus cac2"><svg viewBox="0 0 40 80" fill="#1c1108"><path d="M18 80 L18 20 Q18 10 26 10 L26 0 L22 0 L22 10 Q14 10 14 20 L14 80 Z"/></svg></div>
+    <div class="cactus cac3"><svg viewBox="0 0 40 80" fill="#1c1108"><path d="M18 80 L18 10 Q18 0 22 0 Q26 0 26 10 L26 80 Z"/></svg></div>
+  </div>
+  <div class="mountains layer-1"></div>
+  <div class="dust" id="dust"></div>
+  <div class="tumbleweed">
+    <svg viewBox="0 0 40 40"><g fill="none" stroke="#3a2415" stroke-width="1.4" opacity="0.8">
+      <circle cx="20" cy="20" r="14"/><path d="M6 20c4-8 24-8 28 0"/><path d="M6 20c4 8 24 8 28 0"/>
+      <path d="M20 6c-8 4-8 24 0 28"/><path d="M20 6c8 4 8 24 0 28"/>
+    </g></svg>
+  </div>
+</div>
+
+<div class="content">
+  <header class="hero">
+    <div class="wood-sign">
+      <div class="lantern"><div class="hook"></div><div class="body"></div><div class="glow"></div></div>
+      <h1 class="site-title">САЛУН РАЗДАЧ</h1>
+      <p class="tagline">«Лови добычу, пока шериф не увёз её из города»</p>
+      <div class="clock-row">
+        <div class="clock" id="liveClock">—</div>
+        <button class="sound-toggle" id="soundToggle" type="button">🔈 Звук салуна: выкл</button>
+      </div>
     </div>
+    <a href="#board" class="cta-scroll">К доске розыска ↓</a>
+  </header>
 
-    <footer>
-        <p>&copy; 2026 Guns & Games. Блог на Диком Западе интернета под присмотром GitHub.</p>
-    </footer>
+  <nav class="filter-belt" id="filterBelt">
+    <button data-filter="all" class="filter-badge active">Все дела</button>
+    <button data-filter="steam" class="filter-badge">Steam</button>
+    <button data-filter="epic" class="filter-badge">Epic Games</button>
+    <button data-filter="playstation" class="filter-badge">PlayStation</button>
+    <button data-filter="gog" class="filter-badge">GOG</button>
+    <button data-filter="lenovo" class="filter-badge">Lenovo Legion</button>
+  </nav>
 
-    <script>
-        // Все точные ссылки на страницы получения игр и картинки вшиты в один массив
-        const data = [
-            {
-                "title": "Epic Games Weekly Freebies",
-                "platforms": "PC, Epic Games Store",
-                "url": "https://epicgames.com",
-                "image": "https://unsplash.com"
-            },
-            {
-                "title": "PlayStation Plus Monthly Games",
-                "platforms": "PS4, PS5, PlayStation",
-                "url": "https://playstation.com",
-                "image": "https://unsplash.com"
-            },
-            {
-                "title": "Steam Free to Keep Offers",
-                "platforms": "PC, Steam",
-                "url": "https://steampowered.com",
-                "image": "https://unsplash.com"
-            },
-            {
-                "title": "GOG Free Games Giveaway",
-                "platforms": "PC, GOG",
-                "url": "https://gog.com",
-                "image": "https://unsplash.com"
-            },
-            {
-                "title": "Lenovo Legion Keys & Deals",
-                "platforms": "PC, Lenovo",
-                "url": "https://lenovo.com",
-                "image": "https://unsplash.com"
-            }
-        ];
+  <main id="board" class="board">
+    <div id="status" class="status-line">Шериф скачет за свежими объявлениями…</div>
+    <div id="posterGrid" class="poster-grid"></div>
+  </main>
 
-        const grid = document.getElementById('games-grid');
-        
-        data.forEach(game => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <div class="wanted-tag">WANTED</div>
-                <div class="image-container">
-                    <img src="${game.image}" alt="${game.title}">
-                </div>
-                <h3>${game.title}</h3>
-                <div class="meta">Платформа: ${game.platforms}</div>
-                <a href="${game.url}" target="_blank" class="btn">Забрать награду</a>
-            `;
-            grid.appendChild(card);
-        });
-    </script>
+  <footer class="footer">
+    Данные о раздачах: <a href="https://www.gamerpower.com" target="_blank" rel="noopener">GamerPower.com</a>
+    &nbsp;·&nbsp; Обновлено: <span id="lastSync">—</span>
+    &nbsp;·&nbsp; Доска обновляется на сервере каждые ~30&nbsp;минут, страница сверяется с ней каждые 5&nbsp;минут
+    <br>Раздачи Lenovo Legion помечаются, если упоминание найдено в описании — отдельного канала для них нет.
+    <br>Небо на сайте меняется по вашему локальному времени суток.
+  </footer>
+</div>
+
+<script>
+/* ================= ДЕКОР: пыль, звёзды, светлячки ================= */
+const dustEl = document.getElementById('dust');
+for(let i=0;i<24;i++){
+  const m = document.createElement('div');
+  m.className='mote';
+  m.style.left = (Math.random()*100)+'%';
+  m.style.animationDuration = (8+Math.random()*10)+'s';
+  m.style.animationDelay = (Math.random()*10)+'s';
+  dustEl.appendChild(m);
+}
+const starsEl = document.getElementById('stars');
+for(let i=0;i<45;i++){
+  const s = document.createElement('div');
+  s.className='star';
+  s.style.left = (Math.random()*100)+'%';
+  s.style.top = (Math.random()*70)+'%';
+  s.style.animationDelay = (Math.random()*4)+'s';
+  starsEl.appendChild(s);
+}
+const firefliesEl = document.getElementById('fireflies');
+for(let i=0;i<14;i++){
+  const f = document.createElement('div');
+  f.className='firefly';
+  f.style.left = (Math.random()*100)+'%';
+  f.style.top = (55+Math.random()*35)+'%';
+  f.style.animationDelay = (Math.random()*4)+'s';
+  f.style.animationDuration = (3+Math.random()*3)+'s';
+  firefliesEl.appendChild(f);
+}
+
+/* ================= ВРЕМЯ СУТОК ПО ЛОКАЛЬНОМУ ВРЕМЕНИ ================= */
+const SKY_GRADIENTS = {
+  dawn:  'linear-gradient(180deg,#2c3a5e 0%, #e8916b 45%, #f5c88a 75%, #caa15a 100%)',
+  day:   'linear-gradient(180deg,#7fa8c9 0%, #f2c185 55%, #d9924f 75%, #8a4a34 100%)',
+  dusk:  'linear-gradient(180deg,#3a2140 0%, #c8582f 45%, #7a3b2e 75%, #3a2116 100%)',
+  night: 'linear-gradient(180deg,#0b0f2a 0%, #1b2340 45%, #2c2440 75%, #1a1410 100%)'
+};
+const MOUNTAIN_TINT = {
+  dawn:  {l3:'linear-gradient(180deg,#7a5445,#523a2c)', l2:'linear-gradient(180deg,#583b28,#38251c)'},
+  day:   {l3:'linear-gradient(180deg,#6d4a3d,#4a3327)', l2:'linear-gradient(180deg,#4f3524,#33221a)'},
+  dusk:  {l3:'linear-gradient(180deg,#4a2f36,#33202a)', l2:'linear-gradient(180deg,#38222a,#241620)'},
+  night: {l3:'linear-gradient(180deg,#232338,#181624)', l2:'linear-gradient(180deg,#171626,#0f0e1a)'}
+};
+
+let activeLayer = 'A';
+let lastPeriod = null;
+const skyA = document.getElementById('skyA');
+const skyB = document.getElementById('skyB');
+const celestial = document.getElementById('celestial');
+const l3 = document.querySelector('.layer-3');
+const l2 = document.querySelector('.layer-2');
+
+function getPeriod(){
+  const h = new Date().getHours() + new Date().getMinutes()/60;
+  if(h>=5 && h<8) return 'dawn';
+  if(h>=8 && h<18) return 'day';
+  if(h>=18 && h<22) return 'dusk';
+  return 'night';
+}
+
+function applyCelestial(period){
+  const styles = {
+    dawn:  { top:'26%', size:100, background:'radial-gradient(circle at 40% 35%, #fff0da, #f2a15f 55%, #c8582f 100%)', shadow:'0 0 70px 26px rgba(242,161,95,0.5)' },
+    day:   { top:'9%',  size:110, background:'radial-gradient(circle at 40% 35%, #fff3d0, #e0be5f 45%, #c79a3a 100%)', shadow:'0 0 90px 30px rgba(224,190,95,0.55)' },
+    dusk:  { top:'46%', size:130, background:'radial-gradient(circle at 40% 35%, #ffdcb0, #d9662f 55%, #7a2a20 100%)', shadow:'0 0 90px 34px rgba(200,88,47,0.6)' },
+    night: { top:'12%', size:78,  background:'radial-gradient(circle at 38% 32%, #f5f4ef, #cfd2dd 55%, #9296a8 100%)', shadow:'0 0 40px 12px rgba(207,210,221,0.35)' }
+  }[period];
+  celestial.style.top = styles.top;
+  celestial.style.width = styles.size+'px';
+  celestial.style.height = styles.size+'px';
+  celestial.style.marginLeft = (-styles.size/2)+'px';
+  celestial.style.background = styles.background;
+  celestial.style.boxShadow = styles.shadow;
+}
+
+function updateTimeOfDay(){
+  const period = getPeriod();
+  if(period === lastPeriod) return;
+  lastPeriod = period;
+
+  const incoming = activeLayer==='A' ? skyB : skyA;
+  const outgoing = activeLayer==='A' ? skyA : skyB;
+  incoming.style.background = SKY_GRADIENTS[period];
+  incoming.style.opacity = '1';
+  outgoing.style.opacity = '0';
+  activeLayer = activeLayer==='A' ? 'B' : 'A';
+
+  applyCelestial(period);
+  l3.style.background = MOUNTAIN_TINT[period].l3;
+  l2.style.background = MOUNTAIN_TINT[period].l2;
+
+  document.body.classList.remove('time-dawn','time-day','time-dusk','time-night');
+  document.body.classList.add('time-'+period);
+}
+skyA.style.background = SKY_GRADIENTS[getPeriod()];
+skyA.style.opacity='1';
+updateTimeOfDay();
+setInterval(updateTimeOfDay, 60000);
+
+/* ================= ЖИВЫЕ ЧАСЫ ================= */
+function tick(){
+  const now = new Date();
+  const t = now.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const d = now.toLocaleDateString('ru-RU',{day:'2-digit',month:'long',year:'numeric'});
+  document.getElementById('liveClock').textContent = `Время в городе: ${t} · ${d}`;
+}
+tick(); setInterval(tick,1000);
+
+/* ================= ЗВУК САЛУНА (Web Audio API, без внешних файлов) ================= */
+let audioCtx=null, masterGain=null, soundOn=false, creakTimeout=null, chirpTimeout=null;
+const soundBtn = document.getElementById('soundToggle');
+
+function initAudio(){
+  audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0.35;
+  masterGain.connect(audioCtx.destination);
+
+  const bufferSize = audioCtx.sampleRate*2;
+  const buffer = audioCtx.createBuffer(1,bufferSize,audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++) data[i] = Math.random()*2-1;
+  const windSource = audioCtx.createBufferSource();
+  windSource.buffer = buffer; windSource.loop = true;
+  const windFilter = audioCtx.createBiquadFilter();
+  windFilter.type='lowpass'; windFilter.frequency.value=500;
+  const windGain = audioCtx.createGain(); windGain.gain.value=0.05;
+  windSource.connect(windFilter).connect(windGain).connect(masterGain);
+  windSource.start();
+
+  scheduleCreak();
+  scheduleAmbientCall();
+}
+
+function playCreak(){
+  if(!audioCtx) return;
+  const t0=audioCtx.currentTime;
+  const osc = audioCtx.createOscillator(); osc.type='sawtooth';
+  osc.frequency.setValueAtTime(180,t0);
+  osc.frequency.exponentialRampToValueAtTime(90,t0+0.6);
+  const g = audioCtx.createGain();
+  g.gain.setValueAtTime(0.0001,t0);
+  g.gain.exponentialRampToValueAtTime(0.1,t0+0.08);
+  g.gain.exponentialRampToValueAtTime(0.0001,t0+0.65);
+  osc.connect(g).connect(masterGain);
+  osc.start(t0); osc.stop(t0+0.7);
+}
+function scheduleCreak(){
+  playCreak();
+  creakTimeout = setTimeout(scheduleCreak, 14000+Math.random()*14000);
+}
+
+function playChirpDay(){
+  const t0=audioCtx.currentTime;
+  [1200,1600].forEach((f,i)=>{
+    const osc=audioCtx.createOscillator(); osc.type='sine'; osc.frequency.value=f;
+    const g=audioCtx.createGain();
+    g.gain.setValueAtTime(0.0001,t0+i*0.12);
+    g.gain.exponentialRampToValueAtTime(0.04,t0+i*0.12+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t0+i*0.12+0.15);
+    osc.connect(g).connect(masterGain);
+    osc.start(t0+i*0.12); osc.stop(t0+i*0.12+0.2);
+  });
+}
+function playCricketNight(){
+  const t0=audioCtx.currentTime;
+  const osc=audioCtx.createOscillator(); osc.type='square'; osc.frequency.value=4200;
+  const g=audioCtx.createGain();
+  g.gain.setValueAtTime(0.0001,t0);
+  g.gain.exponentialRampToValueAtTime(0.018,t0+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001,t0+0.09);
+  osc.connect(g).connect(masterGain);
+  osc.start(t0); osc.stop(t0+0.1);
+}
+function scheduleAmbientCall(){
+  const period = getPeriod();
+  if(period==='day') playChirpDay();
+  else if(period==='night') playCricketNight();
+  chirpTimeout = setTimeout(scheduleAmbientCall, 5000+Math.random()*8000);
+}
+
+soundBtn.addEventListener('click', ()=>{
+  if(!audioCtx){
+    initAudio();
+    soundOn = true;
+  } else if(audioCtx.state==='suspended'){
+    audioCtx.resume();
+    soundOn = true;
+  } else {
+    audioCtx.suspend();
+    soundOn = false;
+  }
+  soundBtn.textContent = soundOn ? '🔊 Звук салуна: вкл' : '🔈 Звук салуна: выкл';
+  soundBtn.classList.toggle('on', soundOn);
+});
+
+/* ================= ДАННЫЕ О РАЗДАЧАХ ================= */
+// Данные обновляет GitHub Action (.github/workflows/update-giveaways.yml)
+// каждые ~30 минут и коммитит их в data.json — сайт просто читает этот файл.
+const DATA_URL = './data.json';
+
+let allGiveaways = [];
+let generatedAt = null;
+let currentFilter = 'all';
+
+const statusEl = document.getElementById('status');
+const gridEl = document.getElementById('posterGrid');
+const lastSyncEl = document.getElementById('lastSync');
+
+function tagsFor(g){
+  const p = (g.platforms||'').toLowerCase();
+  const text = ((g.title||'')+' '+(g.description||'')).toLowerCase();
+  const tags = [];
+  if(p.includes('steam')) tags.push('steam');
+  if(p.includes('epic')) tags.push('epic');
+  if(p.includes('gog')) tags.push('gog');
+  if(p.includes('playstation') || p.includes('ps4') || p.includes('ps5')) tags.push('playstation');
+  if(text.includes('lenovo')) tags.push('lenovo');
+  return tags;
+}
+function stampLabel(tag){
+  return { steam:'Steam', epic:'Epic Games', gog:'GOG', playstation:'PlayStation', lenovo:'Lenovo Legion' }[tag] || tag;
+}
+function formatDate(str){
+  if(!str || str.toUpperCase()==='N/A') return 'бессрочно';
+  const d = new Date(str);
+  if(isNaN(d)) return str;
+  return d.toLocaleDateString('ru-RU',{day:'2-digit',month:'short',year:'numeric'});
+}
+function truncate(str,n){
+  if(!str) return 'Подробности — в объявлении.';
+  return str.length>n ? str.slice(0,n).trim()+'…' : str;
+}
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+}
+
+function render(){
+  const filtered = allGiveaways.filter(g=>{
+    if(currentFilter==='all') return true;
+    return tagsFor(g).includes(currentFilter);
+  });
+  if(filtered.length===0){
+    gridEl.innerHTML = `<div class="empty-state">Пока новых бумаг на доске нет.<br>Загляните позже — розыск обновляется каждые 5 минут.</div>`;
+    return;
+  }
+  gridEl.innerHTML = filtered.map(g=>{
+    const tags = tagsFor(g);
+    const primaryTag = tags[0] || 'game';
+    const img = g.thumbnail || g.image || '';
+    const photo = img
+      ? `<img src="${img}" alt="${escapeHtml(g.title)}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=photo-fallback>?</div>'">`
+      : `<div class="photo-fallback">?</div>`;
+    return `
+      <article class="poster">
+        <div class="pin"></div>
+        <div class="stamp stamp-${primaryTag}">${stampLabel(primaryTag)}</div>
+        <p class="wanted-label">РАЗЫСКИВАЕТСЯ</p>
+        <div class="photo-frame">${photo}</div>
+        <h3 class="poster-title">${escapeHtml(g.title||'Без названия')}</h3>
+        <p class="poster-desc">${escapeHtml(truncate(g.description,120))}</p>
+        <div class="poster-meta">
+          <span>💰 Награда: ${escapeHtml(g.worth && g.worth!=='N/A' ? g.worth : 'уточняется')}</span>
+          <span>⏳ Разыскивается до: ${formatDate(g.end_date)}</span>
+        </div>
+        <a class="claim-btn" href="${g.url || g.open_giveaway_url || g.gamerpower_url || '#'}" target="_blank" rel="noopener">Забрать добычу →</a>
+      </article>
+    `;
+  }).join('');
+}
+
+function formatGeneratedAt(iso){
+  if(!iso) return '—';
+  const d = new Date(iso);
+  if(isNaN(d) || d.getFullYear() < 2000) return 'ожидаем первое обновление…';
+  return d.toLocaleString('ru-RU',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+}
+
+async function fetchGiveaways(){
+  statusEl.className='status-line';
+  statusEl.textContent = allGiveaways.length ? 'Шериф сверяется с доской…' : 'Шериф скачет за свежими объявлениями…';
+  if(!allGiveaways.length){
+    gridEl.innerHTML = `<div class="loading-state"><div class="spinner"></div>Собираем розыск по салунам…</div>`;
+  }
+  try{
+    // cache-bust, чтобы не показывать старую версию data.json из кэша браузера/CDN
+    const res = await fetch(DATA_URL + '?t=' + Date.now(), { cache: 'no-store' });
+    if(!res.ok) throw new Error('bad status');
+    const data = await res.json();
+    allGiveaways = Array.isArray(data) ? data : (data.giveaways || []);
+    generatedAt = Array.isArray(data) ? null : (data.generated_at || null);
+
+    if(allGiveaways.length === 0 && (!generatedAt || new Date(generatedAt).getFullYear() < 2000)){
+      statusEl.textContent = 'Доска ещё пустая — первый обход шерифа впереди.';
+    } else {
+      statusEl.textContent = `На доске ${allGiveaways.length} активных дел.`;
+    }
+    lastSyncEl.textContent = formatGeneratedAt(generatedAt);
+    render();
+  }catch(err){
+    statusEl.className='status-line error';
+    statusEl.textContent = 'Шериф молчит — доска ещё не привезена в город.';
+    gridEl.innerHTML = `<div class="empty-state">Не удалось прочитать data.json.<br>Проверь, что файл лежит рядом с index.html и что Action уже отработал хотя бы раз.<br><button class="retry-btn" onclick="fetchGiveaways()">Попробовать снова</button></div>`;
+  }
+}
+
+document.getElementById('filterBelt').addEventListener('click', e=>{
+  const btn = e.target.closest('.filter-badge');
+  if(!btn) return;
+  document.querySelectorAll('.filter-badge').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = btn.dataset.filter;
+  render();
+});
+
+fetchGiveaways();
+setInterval(()=>fetchGiveaways(), 5*60*1000);
+</script>
+
 </body>
 </html>
