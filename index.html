@@ -121,6 +121,74 @@ body.time-night .fireflies{ opacity:1; }
 .tumbleweed svg{width:100%; height:100%;}
 @keyframes roll{ 0%{ transform:translateX(0) rotate(0deg);} 100%{ transform:translateX(120vw) rotate(1080deg);} }
 
+/* ============ ПОВОЗКА ============ */
+.wagon{
+  position:absolute; bottom:5.5vh; left:-24vw; width:220px; opacity:0;
+  animation:wagon-cycle 100s linear infinite;
+}
+.wagon svg{ width:100%; height:auto; display:block; }
+.wagon .wheel{ transform-origin:center; transform-box:fill-box; animation:wheel-spin 0.9s linear infinite; }
+@keyframes wagon-cycle{
+  0%{ transform:translate(0,0); opacity:0; }
+  1%{ opacity:1; }
+  34%{ transform:translate(148vw, -1.4vh); opacity:1; }
+  36%{ opacity:0; }
+  100%{ transform:translate(148vw, -1.4vh); opacity:0; }
+}
+@keyframes wheel-spin{ from{ transform:rotate(0deg);} to{ transform:rotate(360deg);} }
+@media (prefers-reduced-motion: reduce){ .wagon{ animation:none; opacity:0; } }
+.wagon .rider{ transform-origin:center; }
+
+/* ============ ПОЕЗД ============ */
+.train-scene{
+  position:absolute; bottom:14vh; left:-32vw; width:230px; opacity:0;
+  animation:train-cycle 130s linear infinite; animation-delay:12s;
+}
+.train-scene svg{ width:100%; height:auto; display:block; }
+.train-scene .wheel{ transform-origin:center; transform-box:fill-box; animation:wheel-spin 0.55s linear infinite; }
+.train-scene .smoke{ transform-origin:center; transform-box:fill-box; animation:smoke-rise 2.6s ease-out infinite; }
+.train-scene .s2{ animation-delay:1.3s; }
+@keyframes smoke-rise{ 0%{ transform:translate(0,0) scale(0.6); opacity:0.5;} 100%{ transform:translate(-14px,-46px) scale(2); opacity:0;} }
+@keyframes train-cycle{
+  0%{ transform:translate(0,0); opacity:0; }
+  1%{ opacity:1; }
+  38%{ transform:translate(168vw,0); opacity:1; }
+  40%{ opacity:0; }
+  100%{ transform:translate(168vw,0); opacity:0; }
+}
+@media (prefers-reduced-motion: reduce){ .train-scene{ animation:none; opacity:0; } .train-scene .wheel,.train-scene .smoke{ animation:none; } }
+
+/* ============ ПЕРЕСТРЕЛКА (вспышки выстрелов) ============ */
+.flash-point{ opacity:0; transform-origin:center; transform-box:fill-box; }
+.flash-point.lit{ animation:muzzle-pop 0.18s ease-out; }
+@keyframes muzzle-pop{ 0%{opacity:0; transform:scale(0.3);} 30%{opacity:1; transform:scale(1.5);} 100%{opacity:0; transform:scale(0.9);} }
+@media (prefers-reduced-motion: reduce){ .flash-point.lit{ animation:none; opacity:0.9; } }
+
+/* ============ ПОГОДА ============ */
+.weather-layer{ position:fixed; inset:0; z-index:2; pointer-events:none; overflow:hidden; opacity:0; transition:opacity 1.5s ease; }
+.weather-layer.active{ opacity:1; }
+.raindrop{
+  position:absolute; top:-5%; width:1.5px; height:16px;
+  background:linear-gradient(180deg, rgba(210,225,240,0), rgba(210,225,240,0.55));
+  animation:rainfall linear infinite;
+}
+@keyframes rainfall{ to{ transform:translate(-24px, 115vh); } }
+.snowflake{
+  position:absolute; top:-5%; width:4px; height:4px; border-radius:50%;
+  background:rgba(255,255,255,0.85); animation:snowfall linear infinite;
+}
+@keyframes snowfall{ to{ transform:translate(20px, 110vh); } }
+.fog-layer{
+  background:linear-gradient(180deg, rgba(200,200,210,0) 0%, rgba(210,210,220,0.35) 55%, rgba(200,200,210,0.55) 100%);
+}
+.lightning-flash{
+  position:fixed; inset:0; z-index:3; pointer-events:none;
+  background:#fff; opacity:0;
+}
+.lightning-flash.strike{ animation:strike 0.35s ease-out; }
+@keyframes strike{ 0%{opacity:0;} 8%{opacity:0.85;} 16%{opacity:0.1;} 26%{opacity:0.6;} 40%{opacity:0;} 100%{opacity:0;} }
+@media (prefers-reduced-motion: reduce){ .raindrop,.snowflake{ animation:none; display:none; } .lightning-flash.strike{ animation:none; } }
+
 @media (prefers-reduced-motion: reduce){
   .cloud,.bird,.bird svg path,.mote,.tumbleweed,.firefly,.star,.wood-sign{ animation:none !important; }
 }
@@ -178,6 +246,12 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
 .tagline{
   font-family:var(--font-ui); font-style:italic; font-size:clamp(0.95rem,2.4vw,1.25rem);
   color:var(--parchment); letter-spacing:0.03em; margin:0 0 1.6rem; opacity:0.9;
+  transition:opacity 0.6s ease; min-height:1.6em;
+}
+.weather-badge{
+  font-family:var(--font-ui); font-size:0.78rem; letter-spacing:0.04em;
+  color:var(--gold-light); background:rgba(42,26,14,0.5); border:1px solid var(--gold);
+  padding:0.4rem 0.75rem; border-radius:16px;
 }
 .clock-row{
   display:flex; flex-wrap:wrap; gap:0.8rem; align-items:center; justify-content:center;
@@ -257,6 +331,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
 .stamp-gog{ border-color:#7a3fa0; color:#7a3fa0; }
 .stamp-playstation{ border-color:#1f4fa0; color:#1f4fa0; }
 .stamp-lenovo{ border-color:#a0221f; color:#a0221f; }
+.stamp-external{ border-color:#6b6b6b; color:#6b6b6b; }
 
 .wanted-label{ font-family:var(--font-display); font-size:1.5rem; text-align:center; letter-spacing:0.06em; color:var(--ink); margin:0.4rem 0 0.2rem; }
 .photo-frame{ border:6px solid #f4ecd6; box-shadow:0 0 0 1px var(--parchment-shadow), 0 6px 12px rgba(0,0,0,0.3); overflow:hidden; aspect-ratio:16/10; background:#c9b98a; }
@@ -275,6 +350,15 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
 }
 .claim-btn:hover{ background:var(--rust-dark); transform:translateY(2px); box-shadow:0 2px 0 var(--rust-dark); }
 .claim-btn:active{ transform:translateY(4px); box-shadow:none; }
+
+.external-warning{
+  display:flex; align-items:flex-start; gap:0.4rem;
+  font-family:var(--font-ui); font-size:0.68rem; line-height:1.35; letter-spacing:0.01em;
+  color:#5c2418; background:rgba(156,59,46,0.12);
+  border:1px dashed var(--rust); border-radius:2px;
+  padding:0.45rem 0.55rem; margin-top:0.1rem;
+}
+.external-warning .icon{ font-size:0.85rem; line-height:1; }
 
 .empty-state, .loading-state{ grid-column:1/-1; text-align:center; color:var(--parchment); font-family:var(--font-ui); padding:3rem 1rem; letter-spacing:0.04em; }
 .loading-state .spinner{ width:34px; height:34px; margin:0 auto 1rem; border-radius:50%; border:3px solid rgba(224,190,95,0.25); border-top-color:var(--gold-light); animation:spin 0.9s linear infinite; }
@@ -321,7 +405,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
   <div class="fireflies" id="fireflies"></div>
   <div class="mountains layer-3"></div>
   <div class="mountains layer-2"></div>
-  <div class="cacti">
+  <div class="cacti" id="scenery">
     <div class="cactus cac1"><svg viewBox="0 0 40 80" fill="#1c1108"><path d="M18 80 L18 30 Q18 20 26 20 Q30 20 30 26 L30 40 L34 40 L34 26 Q34 14 24 14 L24 4 Q24 0 20 0 Q16 0 16 4 L16 30 L10 30 Q4 30 4 24 L4 12 L0 12 L0 24 Q0 34 10 34 L16 34 L16 80 Z"/></svg></div>
     <div class="cactus cac2"><svg viewBox="0 0 40 80" fill="#1c1108"><path d="M18 80 L18 20 Q18 10 26 10 L26 0 L22 0 L22 10 Q14 10 14 20 L14 80 Z"/></svg></div>
     <div class="cactus cac3"><svg viewBox="0 0 40 80" fill="#1c1108"><path d="M18 80 L18 10 Q18 0 22 0 Q26 0 26 10 L26 80 Z"/></svg></div>
@@ -334,16 +418,106 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
       <path d="M20 6c-8 4-8 24 0 28"/><path d="M20 6c8 4 8 24 0 28"/>
     </g></svg>
   </div>
+  <div class="train-scene" id="trainScene">
+    <svg viewBox="0 0 380 70">
+      <g fill="#1c1108">
+        <rect x="0" y="30" width="55" height="22" rx="2"/>
+        <rect x="6" y="14" width="16" height="18"/>
+        <circle cx="14" cy="12" r="6"/>
+        <rect x="0" y="50" width="55" height="6"/>
+        <circle class="wheel" cx="12" cy="58" r="7"/>
+        <circle class="wheel" cx="34" cy="58" r="7"/>
+        <circle class="wheel" cx="50" cy="58" r="7"/>
+        <rect x="65" y="26" width="70" height="26"/>
+        <circle class="wheel" cx="78" cy="58" r="7"/>
+        <circle class="wheel" cx="122" cy="58" r="7"/>
+        <rect x="145" y="26" width="70" height="26"/>
+        <circle class="wheel" cx="158" cy="58" r="7"/>
+        <circle class="wheel" cx="202" cy="58" r="7"/>
+      </g>
+      <circle class="smoke s1" cx="14" cy="6" r="4" fill="#4a4a4a" opacity="0.5"/>
+      <circle class="smoke s2" cx="14" cy="6" r="3" fill="#4a4a4a" opacity="0.4"/>
+      <g class="rider" transform="translate(230,38)" fill="#1c1108">
+        <path d="M0 18 Q-3 10 3 8 Q5 4 11 4 Q16 4 18 8 L22 8 Q25 -2 33 -2 Q38 -2 40 3 L40 18 L34 18 L34 12 L22 12 L22 18 L16 18 L16 12 L4 12 Q1 12 0 15 Z"/>
+        <circle class="wheel" cx="8" cy="18" r="4"/>
+        <circle class="wheel" cx="30" cy="18" r="4"/>
+        <circle cx="26" cy="-6" r="3.4"/>
+        <path d="M26 -3 L26 5" stroke="#1c1108" stroke-width="2"/>
+        <circle class="flash-point" cx="35" cy="-3" r="4" fill="#ffdd8a"/>
+      </g>
+      <g class="rider" transform="translate(285,40)" fill="#1c1108">
+        <path d="M0 18 Q-3 10 3 8 Q5 4 11 4 Q16 4 18 8 L22 8 Q25 -2 33 -2 Q38 -2 40 3 L40 18 L34 18 L34 12 L22 12 L22 18 L16 18 L16 12 L4 12 Q1 12 0 15 Z"/>
+        <circle class="wheel" cx="8" cy="18" r="4"/>
+        <circle class="wheel" cx="30" cy="18" r="4"/>
+        <circle cx="26" cy="-6" r="3.4"/>
+        <path d="M26 -3 L26 5" stroke="#1c1108" stroke-width="2"/>
+        <circle class="flash-point" cx="35" cy="-3" r="4" fill="#ffdd8a"/>
+      </g>
+      <circle class="flash-point" cx="130" cy="34" r="4" fill="#ffdd8a"/>
+      <circle class="flash-point" cx="210" cy="34" r="4" fill="#ffdd8a"/>
+    </svg>
+  </div>
+  <div class="wagon" id="wagon">
+    <svg viewBox="-70 0 270 90" fill="none">
+      <g class="rider" transform="translate(-60,42)" fill="#1c1108">
+        <path d="M0 18 Q-3 10 3 8 Q5 4 11 4 Q16 4 18 8 L22 8 Q25 -2 33 -2 Q38 -2 40 3 L40 18 L34 18 L34 12 L22 12 L22 18 L16 18 L16 12 L4 12 Q1 12 0 15 Z"/>
+        <circle class="wheel" cx="8" cy="18" r="4"/>
+        <circle class="wheel" cx="30" cy="18" r="4"/>
+        <circle cx="26" cy="-6" r="3.2"/>
+        <path d="M26 -3 L26 5" stroke="#1c1108" stroke-width="2"/>
+        <circle class="flash-point" cx="35" cy="-3" r="3.6" fill="#ffdd8a"/>
+      </g>
+      <g class="rider" transform="translate(-28,46)" fill="#1c1108">
+        <path d="M0 18 Q-3 10 3 8 Q5 4 11 4 Q16 4 18 8 L22 8 Q25 -2 33 -2 Q38 -2 40 3 L40 18 L34 18 L34 12 L22 12 L22 18 L16 18 L16 12 L4 12 Q1 12 0 15 Z"/>
+        <circle class="wheel" cx="8" cy="18" r="4"/>
+        <circle class="wheel" cx="30" cy="18" r="4"/>
+        <circle cx="26" cy="-6" r="3.2"/>
+        <path d="M26 -3 L26 5" stroke="#1c1108" stroke-width="2"/>
+        <circle class="flash-point" cx="35" cy="-3" r="3.6" fill="#ffdd8a"/>
+      </g>
+      <g fill="#1c1108">
+        <!-- лошади -->
+        <path d="M4 58 Q0 48 8 44 Q10 38 18 38 Q24 38 26 44 L30 44 Q34 30 44 30 Q50 30 52 36 L52 58 L46 58 L46 50 L34 50 L34 58 L28 58 L28 50 L14 50 Q10 50 8 54 L8 58 Z"/>
+        <circle class="wheel wheel-h1" cx="14" cy="58" r="5"/>
+        <circle class="wheel wheel-h2" cx="42" cy="58" r="5"/>
+        <path d="M56 58 Q52 48 60 44 Q62 38 70 38 Q76 38 78 44 L82 44 Q86 30 96 30 Q102 30 104 36 L104 58 L98 58 L98 50 L86 50 L86 58 L80 58 L80 50 L66 50 Q62 50 60 54 L60 58 Z"/>
+        <circle class="wheel wheel-h3" cx="66" cy="58" r="5"/>
+        <circle class="wheel wheel-h4" cx="94" cy="58" r="5"/>
+        <!-- оглобли -->
+        <path d="M104 46 L118 40" stroke="#1c1108" stroke-width="2"/>
+        <path d="M104 52 L118 52" stroke="#1c1108" stroke-width="2"/>
+      </g>
+      <!-- повозка -->
+      <g>
+        <path d="M118 40 L190 40 L182 62 L126 62 Z" fill="#3a2415"/>
+        <path d="M124 40 Q154 12 184 40 Z" fill="#c9b98a" opacity="0.9"/>
+        <path d="M124 40 Q154 12 184 40" stroke="#5c3a21" stroke-width="1.6" fill="none"/>
+        <circle class="wheel wheel-w1" cx="134" cy="66" r="9" fill="none" stroke="#1c1108" stroke-width="3"/>
+        <circle class="wheel wheel-w2" cx="174" cy="66" r="9" fill="none" stroke="#1c1108" stroke-width="3"/>
+        <!-- ездок -->
+        <circle cx="150" cy="30" r="5" fill="#1c1108"/>
+        <path d="M150 35 L150 44" stroke="#1c1108" stroke-width="3"/>
+        <circle class="flash-point" cx="158" cy="28" r="4" fill="#ffdd8a"/>
+      </g>
+    </svg>
+  </div>
 </div>
+
+<!-- ============ ПОГОДА ============ -->
+<div class="weather-layer" id="rainLayer"></div>
+<div class="weather-layer" id="snowLayer"></div>
+<div class="weather-layer fog-layer" id="fogLayer"></div>
+<div class="lightning-flash" id="lightningFlash"></div>
 
 <div class="content">
   <header class="hero">
     <div class="wood-sign">
       <div class="lantern"><div class="hook"></div><div class="body"></div><div class="glow"></div></div>
       <h1 class="site-title">САЛУН РАЗДАЧ</h1>
-      <p class="tagline">«Лови добычу, пока шериф не увёз её из города»</p>
+      <p class="tagline" id="tagline">«Лови добычу, пока шериф не увёз её из города»</p>
       <div class="clock-row">
         <div class="clock" id="liveClock">—</div>
+        <div class="weather-badge" id="weatherBadge" hidden></div>
         <button class="sound-toggle" id="soundToggle" type="button">🔈 Звук салуна: выкл</button>
       </div>
     </div>
@@ -357,6 +531,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     <button data-filter="playstation" class="filter-badge">PlayStation</button>
     <button data-filter="gog" class="filter-badge">GOG</button>
     <button data-filter="lenovo" class="filter-badge">Lenovo Legion</button>
+    <button data-filter="external" class="filter-badge">🔑 Ключи со стороны</button>
   </nav>
 
   <main id="board" class="board">
@@ -473,6 +648,174 @@ skyA.style.opacity='1';
 updateTimeOfDay();
 setInterval(updateTimeOfDay, 60000);
 
+/* ================= РОТАЦИЯ ФРАЗ ================= */
+const TAGLINES = [
+  '«Лови добычу, пока шериф не увёз её из города»',
+  '«В этих землях бесплатное — не значит без риска»',
+  '«Даже старатель не всегда находит золото по расписанию»',
+  '«Кто не успел — тот пьёт в салуне за чужой счёт»',
+  '«Доска розыска не врёт, врут только опоздавшие»',
+  '«Лучшая добыча достаётся тому, кто заглядывает почаще»',
+  '«На диком фронтире раздачи долго не залёживаются»',
+  '«Шериф следит за расписанием — а ты следи за доской»'
+];
+let taglineIdx = 0;
+const taglineEl = document.getElementById('tagline');
+function rotateTagline(){
+  taglineEl.style.opacity = '0';
+  setTimeout(()=>{
+    taglineIdx = (taglineIdx+1) % TAGLINES.length;
+    taglineEl.textContent = TAGLINES[taglineIdx];
+    taglineEl.style.opacity = '0.9';
+  }, 600);
+}
+setInterval(rotateTagline, 9000);
+
+/* ================= СМЕНА ДЕКОРАЦИЙ (раз в ~2 дня) ================= */
+const SCENERY = {
+  desert: {
+    filter: 'none',
+    html: `
+      <div class="cactus cac1"><svg viewBox="0 0 40 80" fill="#1c1108"><path d="M18 80 L18 30 Q18 20 26 20 Q30 20 30 26 L30 40 L34 40 L34 26 Q34 14 24 14 L24 4 Q24 0 20 0 Q16 0 16 4 L16 30 L10 30 Q4 30 4 24 L4 12 L0 12 L0 24 Q0 34 10 34 L16 34 L16 80 Z"/></svg></div>
+      <div class="cactus cac2"><svg viewBox="0 0 40 80" fill="#1c1108"><path d="M18 80 L18 20 Q18 10 26 10 L26 0 L22 0 L22 10 Q14 10 14 20 L14 80 Z"/></svg></div>
+      <div class="cactus cac3"><svg viewBox="0 0 40 80" fill="#1c1108"><path d="M18 80 L18 10 Q18 0 22 0 Q26 0 26 10 L26 80 Z"/></svg></div>`
+  },
+  town: {
+    filter: 'saturate(0.7) brightness(0.95)',
+    html: `
+      <div class="cactus cac1" style="height:11vh;"><svg viewBox="0 0 40 60" fill="#1c1108"><rect x="4" y="20" width="26" height="40"/><polygon points="2,20 32,20 17,6"/></svg></div>
+      <div class="cactus cac2" style="height:15vh;"><svg viewBox="0 0 30 90" fill="#1c1108"><rect x="10" y="30" width="10" height="60"/><rect x="4" y="6" width="22" height="24"/><polygon points="4,6 26,6 15,-6"/><line x1="0" y1="30" x2="30" y2="30" stroke="#1c1108" stroke-width="3"/></svg></div>
+      <div class="cactus cac3" style="height:9vh; opacity:0.6;"><svg viewBox="0 0 40 55" fill="#1c1108"><rect x="4" y="18" width="30" height="37"/><polygon points="0,18 38,18 19,4"/></svg></div>`
+  },
+  canyon: {
+    filter: 'hue-rotate(15deg) saturate(1.35)',
+    html: `
+      <div class="cactus cac1" style="height:13vh;"><svg viewBox="0 0 40 80" fill="#1c1108"><polygon points="0,80 8,20 18,40 26,10 34,35 40,80"/></svg></div>
+      <div class="cactus cac2" style="height:17vh;"><svg viewBox="0 0 40 90" fill="#1c1108"><polygon points="2,90 12,15 22,45 30,0 38,50 40,90"/></svg></div>
+      <div class="cactus cac3" style="height:10vh; opacity:0.55;"><svg viewBox="0 0 40 70" fill="#1c1108"><polygon points="0,70 10,25 20,42 30,12 40,70"/></svg></div>`
+  },
+  forest: {
+    filter: 'hue-rotate(65deg) saturate(0.85)',
+    html: `
+      <div class="cactus cac1" style="height:14vh;"><svg viewBox="0 0 30 90" fill="#1c1108"><polygon points="15,0 28,40 20,40 30,70 18,70 30,90 0,90 12,70 0,70 10,40 2,40"/></svg></div>
+      <div class="cactus cac2" style="height:11vh; opacity:0.75;"><svg viewBox="0 0 30 90" fill="#1c1108"><polygon points="15,0 28,40 20,40 30,70 18,70 30,90 0,90 12,70 0,70 10,40 2,40"/></svg></div>
+      <div class="cactus cac3" style="height:16vh;"><svg viewBox="0 0 30 90" fill="#1c1108"><polygon points="15,0 28,40 20,40 30,70 18,70 30,90 0,90 12,70 0,70 10,40 2,40"/></svg></div>`
+  }
+};
+const SCENE_ORDER = ['desert','town','canyon','forest'];
+function applyScenery(){
+  const daysSinceEpoch = Math.floor(Date.now() / 86400000);
+  const key = SCENE_ORDER[Math.floor(daysSinceEpoch/2) % SCENE_ORDER.length];
+  const scene = SCENERY[key];
+  document.getElementById('scenery').innerHTML = scene.html;
+  document.querySelectorAll('.mountains').forEach(m => { m.style.filter = scene.filter; m.style.transition = 'filter 3s ease'; });
+}
+applyScenery();
+
+/* ================= ПОГОДА У ПОСЕТИТЕЛЯ ================= */
+const rainLayer = document.getElementById('rainLayer');
+const snowLayer = document.getElementById('snowLayer');
+const fogLayer = document.getElementById('fogLayer');
+const flashEl = document.getElementById('lightningFlash');
+const weatherBadge = document.getElementById('weatherBadge');
+let stormTimer = null;
+
+function weatherCodeToType(code){
+  if([0].includes(code)) return {type:'clear', label:'ясно'};
+  if([1,2,3].includes(code)) return {type:'cloudy', label:'облачно'};
+  if([45,48].includes(code)) return {type:'fog', label:'туман'};
+  if([51,53,55,56,57,61,63,65,66,67,80,81,82].includes(code)) return {type:'rain', label:'дождь'};
+  if([71,73,75,77,85,86].includes(code)) return {type:'snow', label:'снег'};
+  if([95,96,99].includes(code)) return {type:'storm', label:'гроза'};
+  return {type:'clear', label:'ясно'};
+}
+
+function spawnRain(){
+  rainLayer.innerHTML = '';
+  for(let i=0;i<70;i++){
+    const d = document.createElement('div');
+    d.className = 'raindrop';
+    d.style.left = (Math.random()*100)+'%';
+    d.style.animationDuration = (0.5+Math.random()*0.4)+'s';
+    d.style.animationDelay = (Math.random()*1.5)+'s';
+    rainLayer.appendChild(d);
+  }
+}
+function spawnSnow(){
+  snowLayer.innerHTML = '';
+  for(let i=0;i<50;i++){
+    const d = document.createElement('div');
+    d.className = 'snowflake';
+    d.style.left = (Math.random()*100)+'%';
+    d.style.animationDuration = (6+Math.random()*6)+'s';
+    d.style.animationDelay = (Math.random()*6)+'s';
+    d.style.opacity = 0.4+Math.random()*0.5;
+    snowLayer.appendChild(d);
+  }
+}
+function scheduleLightning(){
+  clearTimeout(stormTimer);
+  stormTimer = setTimeout(()=>{
+    flashEl.classList.remove('strike'); void flashEl.offsetWidth; flashEl.classList.add('strike');
+    scheduleLightning();
+  }, 6000+Math.random()*14000);
+}
+
+function applyWeather(type){
+  rainLayer.classList.remove('active');
+  snowLayer.classList.remove('active');
+  fogLayer.classList.remove('active');
+  clearTimeout(stormTimer);
+  if(type==='rain' || type==='storm'){
+    spawnRain();
+    rainLayer.classList.add('active');
+  }
+  if(type==='snow'){
+    spawnSnow();
+    snowLayer.classList.add('active');
+  }
+  if(type==='fog' || type==='cloudy'){
+    fogLayer.classList.add('active');
+  }
+  if(type==='storm'){
+    scheduleLightning();
+  }
+}
+
+async function loadWeather(lat, lon){
+  try{
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`;
+    const res = await fetch(url);
+    const data = await res.json();
+    const code = data.current.weather_code;
+    const temp = Math.round(data.current.temperature_2m);
+    const info = weatherCodeToType(code);
+    applyWeather(info.type);
+    const icons = {clear:'☀️', cloudy:'☁️', fog:'🌫️', rain:'🌧️', snow:'❄️', storm:'⛈️'};
+    weatherBadge.textContent = `${icons[info.type]} У вас: ${info.label}, ${temp}°C`;
+    weatherBadge.hidden = false;
+  }catch(e){ /* тихо молчим — погода необязательна */ }
+}
+
+function initWeather(){
+  if(!navigator.geolocation){ return; }
+  navigator.geolocation.getCurrentPosition(
+    pos => loadWeather(pos.coords.latitude, pos.coords.longitude),
+    async () => {
+      // геолокацию не разрешили — пробуем прикинуть место по IP
+      try{
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        if(data.latitude && data.longitude) loadWeather(data.latitude, data.longitude);
+      }catch(e){ /* без погоды — тоже нормально */ }
+    },
+    { timeout: 8000 }
+  );
+}
+initWeather();
+setInterval(initWeather, 20*60000);
+
+
 /* ================= ЖИВЫЕ ЧАСЫ ================= */
 function tick(){
   const now = new Date();
@@ -555,6 +898,47 @@ function scheduleAmbientCall(){
   chirpTimeout = setTimeout(scheduleAmbientCall, 5000+Math.random()*8000);
 }
 
+function playGunshot(){
+  if(!audioCtx || !soundOn) return;
+  const t0 = audioCtx.currentTime;
+  const bufferSize = audioCtx.sampleRate * 0.15;
+  const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++) data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufferSize, 3);
+  const src = audioCtx.createBufferSource();
+  src.buffer = buffer;
+  const bp = audioCtx.createBiquadFilter();
+  bp.type = 'bandpass'; bp.frequency.value = 1800; bp.Q.value = 0.7;
+  const g = audioCtx.createGain();
+  g.gain.setValueAtTime(0.22, t0);
+  g.gain.exponentialRampToValueAtTime(0.001, t0+0.13);
+  src.connect(bp).connect(g).connect(masterGain);
+  src.start(t0);
+}
+
+/* ================= ПЕРЕСТРЕЛКИ ============ */
+function scheduleGunfight(wrapperEl, delaySec, windowSec){
+  const flashes = wrapperEl.querySelectorAll('.flash-point');
+  if(!flashes.length) return;
+  const shots = 5 + Math.floor(Math.random()*4);
+  for(let i=0;i<shots;i++){
+    const t = (delaySec + Math.random()*windowSec) * 1000;
+    setTimeout(()=>{
+      const f = flashes[Math.floor(Math.random()*flashes.length)];
+      f.classList.remove('lit');
+      requestAnimationFrame(()=> f.classList.add('lit'));
+      setTimeout(()=> f.classList.remove('lit'), 220);
+      playGunshot();
+    }, t);
+  }
+}
+const wagonEl = document.getElementById('wagon');
+const trainEl = document.getElementById('trainScene');
+scheduleGunfight(wagonEl, 3, 28);
+setInterval(()=> scheduleGunfight(wagonEl, 3, 28), 100000);
+scheduleGunfight(trainEl, 14, 36);
+setInterval(()=> scheduleGunfight(trainEl, 14, 36), 130000);
+
 soundBtn.addEventListener('click', ()=>{
   if(!audioCtx){
     initAudio();
@@ -586,16 +970,19 @@ const lastSyncEl = document.getElementById('lastSync');
 function tagsFor(g){
   const p = (g.platforms||'').toLowerCase();
   const text = ((g.title||'')+' '+(g.description||'')).toLowerCase();
+  const link = g.url || g.open_giveaway_url || g.gamerpower_url || '';
+  const official = !isExternalSite(link); // забрать можно прямо на сайте компании
   const tags = [];
-  if(p.includes('steam')) tags.push('steam');
-  if(p.includes('epic')) tags.push('epic');
-  if(p.includes('gog')) tags.push('gog');
-  if(p.includes('playstation') || p.includes('ps4') || p.includes('ps5')) tags.push('playstation');
+  if(p.includes('steam')) tags.push(official ? 'steam' : 'external');
+  if(p.includes('epic')) tags.push(official ? 'epic' : 'external');
+  if(p.includes('gog')) tags.push(official ? 'gog' : 'external');
+  if(p.includes('playstation') || p.includes('ps4') || p.includes('ps5')) tags.push(official ? 'playstation' : 'external');
   if(text.includes('lenovo')) tags.push('lenovo');
+  if(tags.length===0 && !official) tags.push('external');
   return tags;
 }
 function stampLabel(tag){
-  return { steam:'Steam', epic:'Epic Games', gog:'GOG', playstation:'PlayStation', lenovo:'Lenovo Legion' }[tag] || tag;
+  return { steam:'Steam', epic:'Epic Games', gog:'GOG', playstation:'PlayStation', lenovo:'Lenovo Legion', external:'Сторонний сайт' }[tag] || tag;
 }
 function formatDate(str){
   if(!str || str.toUpperCase()==='N/A') return 'бессрочно';
@@ -609,6 +996,20 @@ function truncate(str,n){
 }
 function escapeHtml(str){
   return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+}
+
+const TRUSTED_HOSTS = [
+  'store.steampowered.com','steampowered.com',
+  'epicgames.com','store.epicgames.com',
+  'gog.com','www.gog.com',
+  'playstation.com','store.playstation.com'
+];
+function isExternalSite(url){
+  if(!url) return false;
+  try{
+    const host = new URL(url).hostname.replace(/^www\./,'');
+    return !TRUSTED_HOSTS.some(t => host === t || host.endsWith('.'+t));
+  }catch(e){ return false; }
 }
 
 function render(){
@@ -627,6 +1028,8 @@ function render(){
     const photo = img
       ? `<img src="${img}" alt="${escapeHtml(g.title)}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=photo-fallback>?</div>'">`
       : `<div class="photo-fallback">?</div>`;
+    const link = g.url || g.open_giveaway_url || g.gamerpower_url || '#';
+    const warnExternal = isExternalSite(link);
     return `
       <article class="poster">
         <div class="pin"></div>
@@ -639,7 +1042,8 @@ function render(){
           <span>💰 Награда: ${escapeHtml(g.worth && g.worth!=='N/A' ? g.worth : 'уточняется')}</span>
           <span>⏳ Разыскивается до: ${formatDate(g.end_date)}</span>
         </div>
-        <a class="claim-btn" href="${g.url || g.open_giveaway_url || g.gamerpower_url || '#'}" target="_blank" rel="noopener">Забрать добычу →</a>
+        ${warnExternal ? `<div class="external-warning"><span class="icon">⚠️</span><span>Чужие земли: добыча на стороннем сайте — там может быть своя проверка (VPN/регион/IP), как у Alienware Arena.</span></div>` : ''}
+        <a class="claim-btn" href="${link}" target="_blank" rel="noopener">Забрать добычу →</a>
       </article>
     `;
   }).join('');
