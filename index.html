@@ -738,11 +738,17 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     Данные о раздачах: <a href="https://www.gamerpower.com" target="_blank" rel="noopener">GamerPower.com</a>
     &nbsp;·&nbsp; Обновлено: <span id="lastSync">—</span>
     &nbsp;·&nbsp; Доска обновляется на сервере каждые ~30&nbsp;минут, страница сверяется с ней каждые 5&nbsp;минут
-    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-29.4</span>
+    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-29.5</span>
   </footer>
 </div>
 
 <script>
+/* ================= ГЛОБАЛЬНОЕ СОСТОЯНИЕ ЗВУКА (объявлено первым, чтобы функции
+   ниже по файлу — включая раннюю смену фона — могли безопасно на него ссылаться) ================= */
+let audioCtx=null, masterGain=null, soundOn=false, creakTimeout=null, chirpTimeout=null;
+let crowdHumNode = null;
+let bellTimeout = null;
+
 /* ================= ДЕКОР: пыль, звёзды, светлячки ================= */
 const dustEl = document.getElementById('dust');
 for(let i=0;i<24;i++){
@@ -1128,7 +1134,6 @@ function tick(){
 tick(); setInterval(tick,1000);
 
 /* ================= ЗВУК САЛУНА (Web Audio API, без внешних файлов) ================= */
-let audioCtx=null, masterGain=null, soundOn=false, creakTimeout=null, chirpTimeout=null;
 const soundBtn = document.getElementById('soundToggle');
 
 function initAudio(){
@@ -1202,9 +1207,6 @@ function scheduleAmbientCall(){
 }
 
 /* ================= ЗВУКИ СЦЕНЫ: колокол церкви, гул людной улицы ================= */
-let crowdHumNode = null;
-let bellTimeout = null;
-
 function startCrowdHum(){
   if(!audioCtx || crowdHumNode) return;
   const bufferSize = audioCtx.sampleRate*2;
