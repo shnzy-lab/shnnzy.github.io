@@ -738,7 +738,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     Данные о раздачах: <a href="https://www.gamerpower.com" target="_blank" rel="noopener">GamerPower.com</a>
     &nbsp;·&nbsp; Обновлено: <span id="lastSync">—</span>
     &nbsp;·&nbsp; Доска обновляется на сервере каждые ~30&nbsp;минут, страница сверяется с ней каждые 5&nbsp;минут
-    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-29.5</span>
+    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-29.7</span>
   </footer>
 </div>
 
@@ -1392,14 +1392,13 @@ function tagsFor(g){
   const p = (g.platforms||'').toLowerCase();
   const text = ((g.title||'')+' '+(g.description||'')).toLowerCase();
   const link = g.url || g.open_giveaway_url || g.gamerpower_url || '';
-  const official = !isExternalSite(link); // раздаётся именно на сайте компании
   const tags = [];
-  if(p.includes('steam') && official) tags.push('steam');
-  if(p.includes('epic') && official) tags.push('epic');
-  if(p.includes('gog') && official) tags.push('gog');
-  if((p.includes('playstation') || p.includes('ps4') || p.includes('ps5')) && official) tags.push('playstation');
+  if(p.includes('steam')) tags.push('steam');
+  if(p.includes('epic')) tags.push('epic');
+  if(p.includes('gog')) tags.push('gog');
+  if(p.includes('playstation') || p.includes('ps4') || p.includes('ps5')) tags.push('playstation');
   if(text.includes('lenovo')) tags.push('lenovo');
-  if(isCuratedExternal(link)) tags.push('external'); // только 4 проверенных сайта-партнёра
+  if(isCuratedExternal(link)) tags.push('external'); // только 4 проверенных сайта-партнёра, дублируем сюда
   return [...new Set(tags)];
 }
 function stampLabel(tag){
