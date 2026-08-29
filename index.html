@@ -738,7 +738,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     Данные о раздачах: <a href="https://www.gamerpower.com" target="_blank" rel="noopener">GamerPower.com</a>
     &nbsp;·&nbsp; Обновлено: <span id="lastSync">—</span>
     &nbsp;·&nbsp; Доска обновляется на сервере каждые ~30&nbsp;минут, страница сверяется с ней каждые 5&nbsp;минут
-    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-29.5</span>
+    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-29.6</span>
   </footer>
 </div>
 
@@ -1455,7 +1455,11 @@ function render(){
     return tagsFor(g).includes(currentFilter);
   });
   if(filtered.length===0){
-    gridEl.innerHTML = `<div class="empty-state">Пока новых бумаг на доске нет.<br>Загляните позже — розыск обновляется каждые 5 минут.</div>`;
+    if(currentFilter==='all'){
+      gridEl.innerHTML = `<div class="empty-state">Пока новых бумаг на доске нет.<br>Загляните позже — розыск обновляется каждые 5 минут.</div>`;
+    }else{
+      gridEl.innerHTML = `<div class="empty-state">На этой вкладке пусто.<br>Здесь показываются только раздачи, ссылка которых ведёт прямо на официальный сайт компании — так честнее, но такие раздачи редки.<br>Загляни во «Все дела», там наверняка что-то найдётся.</div>`;
+    }
     return;
   }
   gridEl.innerHTML = filtered.map(g=>{
