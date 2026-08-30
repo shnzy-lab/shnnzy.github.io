@@ -740,7 +740,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     Данные о раздачах: <a href="https://www.gamerpower.com" target="_blank" rel="noopener">GamerPower.com</a>
     &nbsp;·&nbsp; Обновлено: <span id="lastSync">—</span>
     &nbsp;·&nbsp; Доска обновляется на сервере каждые ~30&nbsp;минут, страница сверяется с ней каждые 5&nbsp;минут
-    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-29.9</span>
+    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-30.11</span>
   </footer>
 </div>
 
@@ -1394,18 +1394,44 @@ const statusEl = document.getElementById('status');
 const gridEl = document.getElementById('posterGrid');
 const lastSyncEl = document.getElementById('lastSync');
 
+// GamerPower всегда заворачивает ссылку через свой редирект gamerpower.com/open/...,
+// поэтому по домену ссылки никогда не понять, откуда реально раздают игру.
+// Зато сам GamerPower честно пишет распространителя в скобках в конце заголовка:
+// «Breathedge (Epic Games) Giveaway», «Leaper (IndieGala) Giveaway» — это и используем.
+function siteLabelFrom(title){
+  if(!title) return '';
+  const matches = [...title.matchAll(/\(([^)]+)\)/g)];
+  if(!matches.length) return '';
+  return matches[matches.length-1][1].trim().toLowerCase();
+}
+// "X (Steam) Key Giveaway" — это КЛЮЧ для Steam, который раздаёт кто-то другой
+// (обычно сторонний сайт вроде Alienware Arena), а не сам Steam.
+// "X (Epic Games) Giveaway" (без слова Key) — это раздача прямо на сторе компании.
+function isKeyGiveaway(title){
+  return /\bkey\b/i.test(title||'');
+}
+
+// Только эти 3 сайта формируют вкладку «Ключи со стороны» — ищем их имя
+// в заголовке ИЛИ в описании (иногда партнёр упоминается только в тексте).
+const CURATED_EXTERNAL_KEYWORDS = ['steelseries','fanatical','humble bundle','humblebundle'];
+function isCuratedExternal(title, description){
+  const text = ((title||'')+' '+(description||'')).toLowerCase();
+  return CURATED_EXTERNAL_KEYWORDS.some(k => text.includes(k));
+}
+
 function tagsFor(g){
-  const p = (g.platforms||'').toLowerCase();
+  const site = siteLabelFrom(g.title);
+  const isKey = isKeyGiveaway(g.title);
   const text = ((g.title||'')+' '+(g.description||'')).toLowerCase();
-  const link = g.url || g.open_giveaway_url || g.gamerpower_url || '';
-  const official = !isExternalSite(link); // раздаётся именно на сайте компании
   const tags = [];
-  if(p.includes('steam') && official) tags.push('steam');
-  if(p.includes('epic') && official) tags.push('epic');
-  if(p.includes('gog') && official) tags.push('gog');
-  if((p.includes('playstation') || p.includes('ps4') || p.includes('ps5')) && official) tags.push('playstation');
+  if(!isKey){ // только настоящие прямые раздачи на сторе компании, не сторонние ключи
+    if(site.includes('steam')) tags.push('steam');
+    if(site.includes('epic')) tags.push('epic');
+    if(site.includes('gog')) tags.push('gog');
+    if(site.includes('playstation') || site.includes('ps store') || site.includes('ps plus')) tags.push('playstation');
+  }
   if(text.includes('lenovo')) tags.push('lenovo');
-  if(isCuratedExternal(link)) tags.push('external'); // только 3 проверенных сайта-партнёра
+  if(isCuratedExternal(g.title, g.description)) tags.push('external');
   return [...new Set(tags)];
 }
 function stampLabel(tag){
@@ -1425,35 +1451,6 @@ function escapeHtml(str){
   return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
 }
 
-// Официальные домены компаний — используются только для общей плашки-предупреждения про VPN.
-const TRUSTED_HOSTS = [
-  'store.steampowered.com','steampowered.com',
-  'epicgames.com','store.epicgames.com',
-  'gog.com','www.gog.com',
-  'playstation.com','store.playstation.com'
-];
-function isExternalSite(url){
-  if(!url) return false;
-  try{
-    const host = new URL(url).hostname.replace(/^www\./,'');
-    return !TRUSTED_HOSTS.some(t => host === t || host.endsWith('.'+t));
-  }catch(e){ return false; }
-}
-
-// Только эти 4 сайта формируют вкладку «Ключи со стороны».
-const CURATED_EXTERNAL_HOSTS = [
-  'steelseries.com',
-  'fanatical.com',
-  'humblebundle.com'
-];
-function isCuratedExternal(url){
-  if(!url) return false;
-  try{
-    const host = new URL(url).hostname.replace(/^www\./,'');
-    return CURATED_EXTERNAL_HOSTS.some(t => host === t || host.endsWith('.'+t));
-  }catch(e){ return false; }
-}
-
 function render(){
   const filtered = allGiveaways.filter(g=>{
     if(currentFilter==='all') return true;
@@ -1471,7 +1468,7 @@ function render(){
       ? `<img src="${img}" alt="${escapeHtml(g.title)}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=photo-fallback>?</div>'">`
       : `<div class="photo-fallback">?</div>`;
     const link = g.url || g.open_giveaway_url || g.gamerpower_url || '#';
-    const warnExternal = isCuratedExternal(link);
+    const warnExternal = isCuratedExternal(g.title, g.description);
     return `
       <article class="poster">
         <div class="pin"></div>
