@@ -1,4 +1,5 @@
 import json
+import re
 import requests
 from datetime import datetime, timezone
 
@@ -32,6 +33,31 @@ JUNK_KEYWORDS = [
     'voucher', 'coupon code', 'cashback', 'crypto', 'token airdrop'
 ]
 
+# GamerPower обычно пишет реального раздатчика в скобках в конце заголовка:
+# "Название (Раздатчик) Giveaway". Полностью исключаем эти источники —
+# они не нужны на доске вообще, ни в одной вкладке.
+EXCLUDED_SITE_KEYWORDS = ['itch.io', 'itchio', 'indiegala', 'stove']
+
+def site_label_from(title):
+    if not title:
+        return ''
+    matches = re.findall(r'\(([^)]+)\)', title)
+    if not matches:
+        return ''
+    return matches[-1].strip().lower()
+
+def is_excluded_source(title, description):
+    site = site_label_from(title)
+    if any(k in site for k in EXCLUDED_SITE_KEYWORDS):
+        return True
+    text = ((title or '') + ' ' + (description or '')).lower()
+    # Alienware Arena часто прячется за "(Steam) Key Giveaway" — в скобках
+    # платформа ключа, а не раздатчик. Ловим по их внутренней валюте ARP
+    # (Arena Reward Points) и прямому упоминанию Alienware.
+    if 'alienware' in text or 'arena reward point' in text or re.search(r'\barp\b', text):
+        return True
+    return False
+
 api_games = None
 try:
     response = requests.get(API_URL, headers=HEADERS, timeout=20)
@@ -50,12 +76,17 @@ skipped_status = 0
 skipped_platform = 0
 skipped_junk = 0
 skipped_type = 0
+skipped_source = 0
 
 if isinstance(api_games, list):
     for g in api_games:
         status = str(g.get('status', 'active')).lower()
         if status != 'active':
             skipped_status += 1
+            continue
+
+        if is_excluded_source(g.get('title'), g.get('description')):
+            skipped_source += 1
             continue
 
         platforms = (g.get('platforms') or '').lower()
@@ -89,7 +120,7 @@ if isinstance(api_games, list):
             "end_date": g.get('end_date'),
             "type": "dlc" if is_dlc else "game",
         })
-    print(f"Прошли фильтр: {len(current_games)} | по статусу: {skipped_status} | по платформе: {skipped_platform} | мусор по словам: {skipped_junk} | по типу (loot/beta без DLC-признаков): {skipped_type}")
+    print(f"Прошли фильтр: {len(current_games)} | по статусу: {skipped_status} | исключённые источники (Itch.io/IndieGala/Stove/Alienware): {skipped_source} | по платформе: {skipped_platform} | мусор по словам: {skipped_junk} | по типу (loot/beta без DLC-признаков): {skipped_type}")
 
 if current_games:
     payload = {
