@@ -248,6 +248,8 @@ body.time-night .fireflies{ opacity:1; }
 .fog-layer{
   background:linear-gradient(180deg, rgba(200,200,210,0) 0%, rgba(210,210,220,0.35) 55%, rgba(200,200,210,0.55) 100%);
 }
+.sky.overcast .sky-layer{ filter:saturate(0.75) brightness(0.92); }
+.sky.overcast .clouds{ opacity:1; }
 .lightning-flash{
   position:fixed; inset:0; z-index:3; pointer-events:none;
   background:#fff; opacity:0;
@@ -738,7 +740,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     Данные о раздачах: <a href="https://www.gamerpower.com" target="_blank" rel="noopener">GamerPower.com</a>
     &nbsp;·&nbsp; Обновлено: <span id="lastSync">—</span>
     &nbsp;·&nbsp; Доска обновляется на сервере каждые ~30&nbsp;минут, страница сверяется с ней каждые 5&nbsp;минут
-    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-29.8</span>
+    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-29.9</span>
   </footer>
 </div>
 
@@ -1073,6 +1075,7 @@ function applyWeather(type){
   rainLayer.classList.remove('active');
   snowLayer.classList.remove('active');
   fogLayer.classList.remove('active');
+  document.getElementById('sky').classList.remove('overcast');
   clearTimeout(stormTimer);
   if(type==='rain' || type==='storm'){
     spawnRain();
@@ -1082,8 +1085,11 @@ function applyWeather(type){
     spawnSnow();
     snowLayer.classList.add('active');
   }
-  if(type==='fog' || type==='cloudy'){
+  if(type==='fog'){
     fogLayer.classList.add('active');
+  }
+  if(type==='cloudy'){
+    document.getElementById('sky').classList.add('overcast'); // лёгкое затемнение, не туман
   }
   if(type==='storm'){
     scheduleLightning();
@@ -1478,7 +1484,7 @@ function render(){
           <span>💰 Награда: ${escapeHtml(g.worth && g.worth!=='N/A' ? g.worth : 'уточняется')}</span>
           <span>⏳ Разыскивается до: ${formatDate(g.end_date)}</span>
         </div>
-        ${warnExternal ? `<div class="external-warning"><span class="icon">⚠️</span><span>Ключ раздают на стороннем сайте — возможно, для получения понадобится VPN.</span></div>` : ''}
+        ${warnExternal ? `<div class="external-warning"><span class="icon">⚠️</span><span>Сайт сторонний — возможно, понадобится VPN.</span></div>` : ''}
         <a class="claim-btn" href="${link}" target="_blank" rel="noopener">Забрать добычу →</a>
       </article>
     `;
