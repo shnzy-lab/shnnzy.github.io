@@ -442,6 +442,8 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
 .retry-btn:hover{ background:var(--gold-light); color:var(--leather-darker); }
 
 .footer{ text-align:center; padding:1.6rem 1rem 2.4rem; font-family:var(--font-ui); font-size:0.78rem; color:rgba(231,214,168,0.6); letter-spacing:0.03em; }
+.footer .author-credit{ display:inline-block; margin-top:0.5rem; font-size:0.82rem; color:var(--gold-light); opacity:0.85; }
+.footer .author-credit a{ color:var(--gold-light); text-decoration:underline; }
 .footer a{ color:var(--gold-light); }
 
 @media (max-width:520px){
@@ -740,7 +742,9 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     Данные о раздачах: <a href="https://www.gamerpower.com" target="_blank" rel="noopener">GamerPower.com</a>
     &nbsp;·&nbsp; Обновлено: <span id="lastSync">—</span>
     &nbsp;·&nbsp; Доска обновляется на сервере каждые ~30&nbsp;минут, страница сверяется с ней каждые 5&nbsp;минут
-    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-30.11</span>
+    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-30.12</span>
+    <br>
+    <span class="author-credit">🤠 Шериф этих земель — <a href="https://steamcommunity.com/id/chivoobliiin/" target="_blank" rel="noopener">chivoobliiin</a></span>
   </footer>
 </div>
 
@@ -1443,6 +1447,73 @@ function formatDate(str){
   if(isNaN(d)) return str;
   return d.toLocaleDateString('ru-RU',{day:'2-digit',month:'short',year:'numeric'});
 }
+
+/* ================= ЛОКАЛЬНАЯ ВАЛЮТА ПО СТРАНЕ ПОСЕТИТЕЛЯ ================= */
+const COUNTRY_CURRENCY = {
+  RU:'RUB', BY:'BYN', UA:'UAH', KZ:'KZT', UZ:'UZS', KG:'KGS', TJ:'TJS', TM:'TMT',
+  AM:'AMD', AZ:'AZN', GE:'GEL', MD:'MDL',
+  US:'USD', CA:'CAD', GB:'GBP', IE:'EUR',
+  DE:'EUR', FR:'EUR', IT:'EUR', ES:'EUR', PT:'EUR', NL:'EUR', BE:'EUR', AT:'EUR',
+  FI:'EUR', GR:'EUR', SK:'EUR', SI:'EUR', LT:'EUR', LV:'EUR', EE:'EUR', CY:'EUR', LU:'EUR', MT:'EUR', HR:'EUR',
+  PL:'PLN', CZ:'CZK', HU:'HUF', RO:'RON', BG:'BGN', SE:'SEK', NO:'NOK', DK:'DKK', CH:'CHF',
+  TR:'TRY', IL:'ILS', AE:'AED', SA:'SAR', EG:'EGP',
+  IN:'INR', PK:'PKR', BD:'BDT', CN:'CNY', JP:'JPY', KR:'KRW', TW:'TWD', HK:'HKD', SG:'SGD',
+  ID:'IDR', MY:'MYR', TH:'THB', VN:'VND', PH:'PHP',
+  AU:'AUD', NZ:'NZD',
+  BR:'BRL', MX:'MXN', AR:'ARS', CL:'CLP', CO:'COP', PE:'PEN',
+  ZA:'ZAR', NG:'NGN'
+};
+const CURRENCY_SYMBOLS = {
+  RUB:'₽', BYN:'Br', UAH:'₴', KZT:'₸', UZS:'сум', KGS:'сом', TJS:'смн', TMT:'ман',
+  AMD:'֏', AZN:'₼', GEL:'₾', MDL:'L',
+  USD:'$', CAD:'C$', GBP:'£', EUR:'€',
+  PLN:'zł', CZK:'Kč', HUF:'Ft', RON:'лей', BGN:'лв', SEK:'kr', NOK:'kr', DKK:'kr', CHF:'CHF',
+  TRY:'₺', ILS:'₪', AED:'د.إ', SAR:'﷼', EGP:'£E',
+  INR:'₹', PKR:'₨', BDT:'৳', CNY:'¥', JPY:'¥', KRW:'₩', TWD:'NT$', HKD:'HK$', SGD:'S$',
+  IDR:'Rp', MYR:'RM', THB:'฿', VND:'₫', PHP:'₱',
+  AUD:'A$', NZD:'NZ$',
+  BRL:'R$', MXN:'$', ARS:'$', CLP:'$', COP:'$', PEN:'S/',
+  ZAR:'R', NGN:'₦'
+};
+const ZERO_DECIMAL_CURRENCIES = ['JPY','KRW','VND','HUF','IDR'];
+
+let userCurrency = 'USD';
+let usdToLocalRate = 1;
+
+async function initLocalCurrency(){
+  try{
+    const res = await fetch('https://ipapi.co/json/');
+    const geo = await res.json();
+    const cc = (geo.country_code || '').toUpperCase();
+    const target = COUNTRY_CURRENCY[cc];
+    if(target && target !== 'USD'){
+      const rateRes = await fetch('https://open.er-api.com/v6/latest/USD');
+      const rateData = await rateRes.json();
+      if(rateData && rateData.result === 'success' && rateData.rates && rateData.rates[target]){
+        userCurrency = target;
+        usdToLocalRate = rateData.rates[target];
+      }
+    }
+  }catch(e){ /* не вышло — остаёмся на долларах, не страшно */ }
+  if(allGiveaways.length) render(); // перерисовать уже показанные карточки в новой валюте
+}
+initLocalCurrency();
+
+function formatWorth(worth){
+  if(!worth || String(worth).toUpperCase()==='N/A') return 'уточняется';
+  const num = parseFloat(String(worth).replace(/[^0-9.]/g,''));
+  if(isNaN(num)) return escapeHtml(worth);
+  if(userCurrency === 'USD'){
+    return `$${num.toFixed(2)}`;
+  }
+  const converted = num * usdToLocalRate;
+  const symbol = CURRENCY_SYMBOLS[userCurrency] || userCurrency;
+  const formatted = ZERO_DECIMAL_CURRENCIES.includes(userCurrency)
+    ? Math.round(converted).toLocaleString('ru-RU')
+    : converted.toLocaleString('ru-RU', {minimumFractionDigits:2, maximumFractionDigits:2});
+  return `≈ ${formatted} ${symbol}`;
+}
+
 function truncate(str,n){
   if(!str) return 'Подробности — в объявлении.';
   return str.length>n ? str.slice(0,n).trim()+'…' : str;
@@ -1478,7 +1549,7 @@ function render(){
         <h3 class="poster-title">${escapeHtml(g.title||'Без названия')}</h3>
         <p class="poster-desc">${escapeHtml(truncate(g.description,120))}</p>
         <div class="poster-meta">
-          <span>💰 Награда: ${escapeHtml(g.worth && g.worth!=='N/A' ? g.worth : 'уточняется')}</span>
+          <span>💰 Награда: ${formatWorth(g.worth)}</span>
           <span>⏳ Разыскивается до: ${formatDate(g.end_date)}</span>
         </div>
         ${warnExternal ? `<div class="external-warning"><span class="icon">⚠️</span><span>Сайт сторонний — возможно, понадобится VPN.</span></div>` : ''}
