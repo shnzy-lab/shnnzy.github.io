@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-31T09:11:28Z",
+  "generated_at": "2026-08-31T18:34:58Z",
   "giveaways": [
     {
       "id": 3709,
@@ -47,18 +47,6 @@
       "url": "https://www.gamerpower.com/open/together-after-dark-epic-games-giveaway",
       "platforms": "PC, Epic Games Store",
       "end_date": "2026-09-02 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3742,
-      "title": "Targeted – 10 Days (Epic Games) Giveaway",
-      "description": "New Giveaway! Download Targeted – 10 Days for free via Epic Games Store! Targeted – 10 Days is a 3d escape-room-style game with multiple difficulty levels.",
-      "worth": "$4.99",
-      "image": "https://www.gamerpower.com/offers/1b/6a7ce767b76aa.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6a7ce767b76aa.jpg",
-      "url": "https://www.gamerpower.com/open/targeted-10-days-epic-games-giveaway",
-      "platforms": "PC, Epic Games Store",
-      "end_date": "2026-08-31 23:59:00",
       "type": "game"
     }
   ]
