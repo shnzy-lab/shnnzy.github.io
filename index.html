@@ -357,6 +357,51 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
 .filter-badge:hover{ background:var(--leather-dark); transform:translateY(-2px); }
 .filter-badge.active{ background:var(--rust); border-color:var(--gold-light); color:#fff2d9; box-shadow:0 0 12px rgba(156,59,46,0.7);}
 
+/* ============ РОЗЫСКНОЙ СПИСОК ============ */
+.wanted-panel{ max-width:760px; margin:1.2rem auto 0; padding:0 1.2rem; }
+.wanted-toggle{
+  display:block; margin:0 auto; font-family:var(--font-ui); font-weight:600; letter-spacing:0.05em;
+  text-transform:uppercase; font-size:0.8rem; background:var(--leather); color:var(--parchment);
+  border:1px solid var(--gold); padding:0.5rem 1.1rem; border-radius:20px; cursor:pointer;
+}
+.wanted-toggle:hover{ background:var(--leather-dark); }
+.wanted-body{
+  margin-top:0.9rem; background:var(--parchment); border:1px solid var(--parchment-shadow);
+  border-radius:4px; padding:1.1rem 1.3rem; box-shadow:0 8px 18px rgba(0,0,0,0.35);
+}
+.wanted-hint{ font-family:var(--font-ui); font-size:0.78rem; line-height:1.5; color:var(--leather-dark); margin:0 0 0.9rem; }
+.wanted-hint code{ background:rgba(92,58,33,0.12); padding:0.1rem 0.35rem; border-radius:3px; }
+.wanted-input-row{ display:flex; gap:0.5rem; margin-bottom:0.8rem; }
+.wanted-input-row input{
+  flex:1; font-family:var(--font-body); font-size:0.85rem; padding:0.5rem 0.7rem;
+  border:1px solid var(--parchment-shadow); border-radius:3px; background:#fdf6e3; color:var(--ink);
+}
+.wanted-input-row button{
+  font-family:var(--font-ui); font-weight:700; text-transform:uppercase; font-size:0.75rem;
+  background:var(--rust); color:#fbe9d2; border:none; border-radius:3px; padding:0.5rem 1rem; cursor:pointer;
+}
+.wanted-input-row button:hover{ background:var(--rust-dark); }
+.wanted-items{ list-style:none; margin:0 0 1rem; padding:0; display:flex; flex-wrap:wrap; gap:0.5rem; }
+.wanted-items li{
+  font-family:var(--font-ui); font-size:0.78rem; background:rgba(156,59,46,0.1); border:1px solid var(--rust);
+  color:var(--leather-darker); padding:0.3rem 0.5rem 0.3rem 0.7rem; border-radius:14px; display:flex; align-items:center; gap:0.4rem;
+}
+.wanted-items li.wanted-empty{ background:none; border:none; opacity:0.6; }
+.wanted-items .wanted-remove{ background:none; border:none; color:var(--rust); font-size:0.9rem; cursor:pointer; line-height:1; padding:0; }
+.wanted-copy-btn{
+  font-family:var(--font-ui); font-weight:600; font-size:0.75rem; text-transform:uppercase;
+  background:transparent; border:1px solid var(--leather); color:var(--leather-dark);
+  padding:0.45rem 0.9rem; border-radius:16px; cursor:pointer;
+}
+.wanted-copy-btn:hover{ background:var(--leather); color:var(--parchment); }
+
+.poster.is-wanted{ box-shadow:0 0 0 3px var(--gold-light), 0 10px 22px rgba(0,0,0,0.45); }
+.wanted-hit{
+  font-family:var(--font-ui); font-weight:700; font-size:0.68rem; letter-spacing:0.04em; text-transform:uppercase;
+  text-align:center; color:#5c2418; background:rgba(224,190,95,0.35); border:1px dashed var(--gold);
+  border-radius:3px; padding:0.35rem; margin-top:0.1rem;
+}
+
 /* ============ BOARD ============ */
 .board{
   padding:3.2rem 5vw 5rem;
@@ -733,6 +778,24 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     <button data-filter="external" class="filter-badge">🗝️ Ключи со стороны</button>
   </nav>
 
+  <section class="wanted-panel">
+    <button class="wanted-toggle" id="wantedToggle">🎯 Мой розыскной список</button>
+    <div class="wanted-body" id="wantedBody" hidden>
+      <p class="wanted-hint">
+        Впиши названия игр, за которыми следишь — они подсветятся особым штампом прямо на доске.
+        Список хранится только в этом браузере. Чтобы получать уведомления в Telegram, когда такая игра
+        появится в раздачах, нажми «Скопировать» и вставь список в файл <code>wanted.json</code> в репозитории —
+        бот в GitHub Action сам напишет тебе, как только найдёт совпадение.
+      </p>
+      <div class="wanted-input-row">
+        <input type="text" id="wantedInput" placeholder="Например: Elden Ring" autocomplete="off">
+        <button id="wantedAddBtn" type="button">Добавить</button>
+      </div>
+      <ul class="wanted-items" id="wantedItems"></ul>
+      <button class="wanted-copy-btn" id="wantedCopyBtn" type="button">📋 Скопировать для wanted.json</button>
+    </div>
+  </section>
+
   <main id="board" class="board">
     <div id="status" class="status-line">Шериф скачет за свежими объявлениями…</div>
     <div id="posterGrid" class="poster-grid"></div>
@@ -742,7 +805,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     Данные о раздачах: <a href="https://www.gamerpower.com" target="_blank" rel="noopener">GamerPower.com</a>
     &nbsp;·&nbsp; Обновлено: <span id="lastSync">—</span>
     &nbsp;·&nbsp; Доска обновляется на сервере каждые ~30&nbsp;минут, страница сверяется с ней каждые 5&nbsp;минут
-    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-30.12</span>
+    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-30.14</span>
     <br>
     <span class="author-credit">🤠 Шериф этих земель — <a href="https://steamcommunity.com/id/chivoobliiin/" target="_blank" rel="noopener">chivoobliiin</a></span>
   </footer>
@@ -1100,9 +1163,9 @@ function applyWeather(type){
   }
 }
 
-async function loadWeather(lat, lon){
+async function loadWeather(lat, lon, isPrecise, cityLabel){
   try{
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=celsius&timezone=auto`;
     const res = await fetch(url);
     const data = await res.json();
     const code = data.current.weather_code;
@@ -1110,28 +1173,42 @@ async function loadWeather(lat, lon){
     const info = weatherCodeToType(code);
     applyWeather(info.type);
     const icons = {clear:'☀️', cloudy:'☁️', fog:'🌫️', rain:'🌧️', snow:'❄️', storm:'⛈️'};
-    weatherBadge.textContent = `${icons[info.type]} У вас: ${info.label}, ${temp}°C`;
+    const approxNote = isPrecise ? '' : (cityLabel ? ` (≈${cityLabel})` : ' (примерно, по IP)');
+    weatherBadge.textContent = `${icons[info.type]} У вас: ${info.label}, ${temp}°C${approxNote}`;
+    const cityNote = cityLabel ? `Город: ${cityLabel}. ` : '';
+    weatherBadge.title = isPrecise
+      ? `${cityNote}Погода по точной геолокации браузера (${lat.toFixed(2)}, ${lon.toFixed(2)})`
+      : `${cityNote}Геолокацию браузера не разрешили — место определено примерно по IP-адресу (${lat.toFixed(2)}, ${lon.toFixed(2)}), точность ниже. Если город неверный — дело в IP-провайдере, не в сайте.`;
     weatherBadge.hidden = false;
   }catch(e){ /* тихо молчим — погода необязательна */ }
+}
+
+let ipGeoCache = null;
+async function getIpGeoData(){
+  if(ipGeoCache) return ipGeoCache;
+  const res = await fetch('https://ipapi.co/json/');
+  ipGeoCache = await res.json();
+  return ipGeoCache;
 }
 
 function initWeather(){
   if(!navigator.geolocation){ return; }
   navigator.geolocation.getCurrentPosition(
-    pos => loadWeather(pos.coords.latitude, pos.coords.longitude),
+    pos => loadWeather(pos.coords.latitude, pos.coords.longitude, true, null),
     async () => {
-      // геолокацию не разрешили — пробуем прикинуть место по IP
+      // геолокацию не разрешили или не удалось — прикидываем место по IP
+      // (менее точно: провайдер иногда определяет ближайший крупный город, а не точную точку)
       try{
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        if(data.latitude && data.longitude) loadWeather(data.latitude, data.longitude);
+        const data = await getIpGeoData();
+        const cityLabel = [data.city, data.region, data.country_name].filter(Boolean).join(', ');
+        if(data.latitude && data.longitude) loadWeather(data.latitude, data.longitude, false, cityLabel);
       }catch(e){ /* без погоды — тоже нормально */ }
     },
-    { timeout: 8000 }
+    { timeout: 12000, enableHighAccuracy: true, maximumAge: 300000 }
   );
 }
 initWeather();
-setInterval(initWeather, 20*60000);
+setInterval(initWeather, 10*60000);
 
 
 /* ================= ЖИВЫЕ ЧАСЫ ================= */
@@ -1482,8 +1559,7 @@ let usdToLocalRate = 1;
 
 async function initLocalCurrency(){
   try{
-    const res = await fetch('https://ipapi.co/json/');
-    const geo = await res.json();
+    const geo = await getIpGeoData();
     const cc = (geo.country_code || '').toUpperCase();
     const target = COUNTRY_CURRENCY[cc];
     if(target && target !== 'USD'){
@@ -1522,6 +1598,71 @@ function escapeHtml(str){
   return String(str).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
 }
 
+/* ================= РОЗЫСКНОЙ СПИСОК (localStorage, только в этом браузере) ================= */
+const WANTED_KEY = 'saloonWantedList';
+function getWantedList(){
+  try{ return JSON.parse(localStorage.getItem(WANTED_KEY) || '[]'); }catch(e){ return []; }
+}
+function saveWantedList(list){
+  try{ localStorage.setItem(WANTED_KEY, JSON.stringify(list)); }catch(e){ /* приватный режим — переживём */ }
+}
+function isWanted(title){
+  const list = getWantedList();
+  if(!list.length) return false;
+  const t = (title||'').toLowerCase();
+  return list.some(w => w && t.includes(w.toLowerCase()));
+}
+function renderWantedList(){
+  const list = getWantedList();
+  const itemsEl = document.getElementById('wantedItems');
+  itemsEl.innerHTML = list.length
+    ? list.map((w,i)=>`<li>${escapeHtml(w)} <button type="button" class="wanted-remove" data-i="${i}">×</button></li>`).join('')
+    : `<li class="wanted-empty">Пока пусто — добавь первую игру</li>`;
+}
+document.getElementById('wantedToggle').addEventListener('click', ()=>{
+  const body = document.getElementById('wantedBody');
+  body.hidden = !body.hidden;
+});
+document.getElementById('wantedAddBtn').addEventListener('click', ()=>{
+  const input = document.getElementById('wantedInput');
+  const val = input.value.trim();
+  if(!val) return;
+  const list = getWantedList();
+  if(!list.some(w => w.toLowerCase()===val.toLowerCase())){
+    list.push(val);
+    saveWantedList(list);
+    renderWantedList();
+    if(allGiveaways.length) render();
+  }
+  input.value = '';
+  input.focus();
+});
+document.getElementById('wantedInput').addEventListener('keydown', (e)=>{
+  if(e.key==='Enter') document.getElementById('wantedAddBtn').click();
+});
+document.getElementById('wantedItems').addEventListener('click', (e)=>{
+  const btn = e.target.closest('.wanted-remove');
+  if(!btn) return;
+  const list = getWantedList();
+  list.splice(Number(btn.dataset.i), 1);
+  saveWantedList(list);
+  renderWantedList();
+  if(allGiveaways.length) render();
+});
+document.getElementById('wantedCopyBtn').addEventListener('click', ()=>{
+  const list = getWantedList();
+  const btn = document.getElementById('wantedCopyBtn');
+  const original = btn.textContent;
+  navigator.clipboard.writeText(JSON.stringify(list, null, 2)).then(()=>{
+    btn.textContent = '✅ Скопировано! Вставь в wanted.json';
+    setTimeout(()=> btn.textContent = original, 2200);
+  }).catch(()=>{
+    btn.textContent = '⚠️ Не удалось скопировать';
+    setTimeout(()=> btn.textContent = original, 2200);
+  });
+});
+renderWantedList();
+
 function render(){
   const filtered = allGiveaways.filter(g=>{
     if(currentFilter==='all') return true;
@@ -1540,8 +1681,9 @@ function render(){
       : `<div class="photo-fallback">?</div>`;
     const link = g.url || g.open_giveaway_url || g.gamerpower_url || '#';
     const warnExternal = isCuratedExternal(g.title, g.description);
+    const wanted = isWanted(g.title);
     return `
-      <article class="poster">
+      <article class="poster${wanted ? ' is-wanted' : ''}">
         <div class="pin"></div>
         <div class="stamp stamp-${primaryTag}">${stampLabel(primaryTag)}</div>
         <p class="wanted-label">РАЗЫСКИВАЕТСЯ</p>
@@ -1552,6 +1694,7 @@ function render(){
           <span>💰 Награда: ${formatWorth(g.worth)}</span>
           <span>⏳ Разыскивается до: ${formatDate(g.end_date)}</span>
         </div>
+        ${wanted ? `<div class="wanted-hit">🎯 Из вашего розыска!</div>` : ''}
         ${warnExternal ? `<div class="external-warning"><span class="icon">⚠️</span><span>Сайт сторонний — возможно, понадобится VPN.</span></div>` : ''}
         <a class="claim-btn" href="${link}" target="_blank" rel="noopener">Забрать добычу →</a>
       </article>
