@@ -23,12 +23,15 @@ jobs:
         run: pip install requests
 
       - name: Run update script
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python scripts/update_games.py
 
       - name: Commit and Push Changes
         run: |
           git config --global user.name "shnzy-lab-bot"
           git config --global user.email "bot@github.com"
-          git add data.json
+          git add data.json notified.json
           git diff --quiet && git diff --staged --quiet || git commit -m "Шериф обновил список раздач [skip ci]"
           git push
