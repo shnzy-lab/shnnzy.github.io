@@ -1,4 +1,5 @@
 import json
+import os
 import re
 import requests
 from datetime import datetime, timezone
@@ -57,6 +58,85 @@ def is_excluded_source(title, description):
     if 'alienware' in text or 'arena reward point' in text or re.search(r'\barp\b', text):
         return True
     return False
+
+# ================= РОЗЫСКНОЙ СПИСОК И УВЕДОМЛЕНИЯ В TELEGRAM =================
+# wanted.json — список ключевых слов (названий игр), которые ищет владелец сайта.
+# notified.json — id раздач, о которых уже отправлено уведомление (чтобы не дублировать).
+# TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID — секреты репозитория, см. README по настройке.
+
+def load_wanted_list():
+    try:
+        with open('wanted.json', 'r', encoding='utf-8') as f:
+            raw = json.load(f)
+        return [str(w).strip().lower() for w in raw if str(w).strip()]
+    except Exception:
+        return []
+
+def load_notified_ids():
+    try:
+        with open('notified.json', 'r', encoding='utf-8') as f:
+            return set(str(x) for x in json.load(f))
+    except Exception:
+        return set()
+
+def save_notified_ids(ids):
+    with open('notified.json', 'w', encoding='utf-8') as f:
+        json.dump(sorted(ids), f)
+
+def send_telegram_message(text):
+    token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+    if not token or not chat_id:
+        print("Telegram не настроен (нет TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID в секретах) — уведомление пропущено.")
+        return False
+    try:
+        resp = requests.post(
+            f"https://api.telegram.org/bot{token}/sendMessage",
+            data={
+                "chat_id": chat_id,
+                "text": text,
+                "parse_mode": "HTML",
+                "disable_web_page_preview": False,
+            },
+            timeout=15,
+        )
+        if resp.status_code != 200:
+            print(f"Telegram вернул ошибку {resp.status_code}: {resp.text[:200]}")
+            return False
+        return True
+    except Exception as e:
+        print(f"Не удалось отправить сообщение в Telegram: {e}")
+        return False
+
+def check_wanted_and_notify(games):
+    wanted = load_wanted_list()
+    if not wanted:
+        print("wanted.json пуст или отсутствует — уведомления пропущены.")
+        return
+    notified = load_notified_ids()
+    newly_notified = set(notified)
+    hits = 0
+    for g in games:
+        gid = str(g.get('id'))
+        if gid in notified:
+            continue
+        title_lower = (g.get('title') or '').lower()
+        matched = next((w for w in wanted if w in title_lower), None)
+        if not matched:
+            continue
+        message = (
+            f"🤠 <b>Шериф нашёл то, что вы искали!</b>\n\n"
+            f"<b>{g.get('title')}</b>\n"
+            f"Совпадение по слову: «{matched}»\n"
+            f"Награда: {g.get('worth') or 'уточняется'}\n"
+            f"Забрать: {g.get('url') or ''}"
+        )
+        if send_telegram_message(message):
+            hits += 1
+        newly_notified.add(gid)
+    if newly_notified != notified:
+        save_notified_ids(newly_notified)
+    print(f"Розыскной список: совпадений найдено — {hits}.")
 
 api_games = None
 try:
@@ -123,6 +203,7 @@ if isinstance(api_games, list):
     print(f"Прошли фильтр: {len(current_games)} | по статусу: {skipped_status} | исключённые источники (Itch.io/IndieGala/Stove/Alienware): {skipped_source} | по платформе: {skipped_platform} | мусор по словам: {skipped_junk} | по типу (loot/beta без DLC-признаков): {skipped_type}")
 
 if current_games:
+    check_wanted_and_notify(current_games)
     payload = {
         "generated_at": datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
         "giveaways": current_games[:40]
