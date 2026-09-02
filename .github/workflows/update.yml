@@ -32,6 +32,6 @@ jobs:
         run: |
           git config --global user.name "shnzy-lab-bot"
           git config --global user.email "bot@github.com"
-          git add data.json notified.json
+          git add data.json notified.json subscribers.json telegram_offset.json
           git diff --quiet && git diff --staged --quiet || git commit -m "Шериф обновил список раздач [skip ci]"
           git push
