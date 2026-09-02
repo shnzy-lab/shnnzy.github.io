@@ -59,10 +59,164 @@ def is_excluded_source(title, description):
         return True
     return False
 
-# ================= РОЗЫСКНОЙ СПИСОК И УВЕДОМЛЕНИЯ В TELEGRAM =================
-# wanted.json — список ключевых слов (названий игр), которые ищет владелец сайта.
-# notified.json — id раздач, о которых уже отправлено уведомление (чтобы не дублировать).
-# TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID — секреты репозитория, см. README по настройке.
+# ================= РОЗЫСКНОЙ СПИСОК: ЛЮБОЙ ПОСЕТИТЕЛЬ МОЖЕТ ПОДПИСАТЬСЯ =================
+# Посетитель сайта вводит название игры → сайт открывает Telegram-бота со
+# специальной ссылкой t.me/<бот>?start=w_<код>. Бот получает эту команду,
+# бот сохраняет подписку (subscribers.json) и дальше уведомляет ИМЕННО
+# этого человека, когда игра появится на доске. Работает через обычный
+# опрос getUpdates раз в 3 часа (тем же Action) — отдельный сервер не нужен.
+#
+# subscribers.json  — {"<chat_id>": ["ключевое слово", ...], ...}
+# telegram_offset.json — {"offset": <последний обработанный update_id + 1>}
+# notified.json     — {"<chat_id>": [<id раздачи>, ...], ...}  (кому что уже отправили)
+# wanted.json + TELEGRAM_CHAT_ID — старый личный список владельца, для
+#   совместимости он просто подмешивается как ещё один подписчик.
+
+import base64
+
+def load_json_file(path, default):
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return default
+
+def save_json_file(path, data):
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+def decode_start_payload(payload):
+    try:
+        s = payload.replace('-', '+').replace('_', '/')
+        s += '=' * (-len(s) % 4)
+        return base64.b64decode(s).decode('utf-8').strip()
+    except Exception:
+        return None
+
+def telegram_api(method, params=None):
+    token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    if not token:
+        return None
+    try:
+        resp = requests.post(f"https://api.telegram.org/bot{token}/{method}", data=params or {}, timeout=15)
+        return resp.json()
+    except Exception as e:
+        print(f"Telegram API ошибка ({method}): {e}")
+        return None
+
+def send_telegram_message(chat_id, text):
+    result = telegram_api('sendMessage', {
+        "chat_id": chat_id, "text": text,
+        "parse_mode": "HTML", "disable_web_page_preview": False,
+    })
+    return bool(result and result.get('ok'))
+
+def poll_telegram_commands():
+    """Читаем новые сообщения боту (команды /watch, /unwatch, /list, ссылки со старта
+    сайта) и обновляем subscribers.json. Возвращает актуальный словарь подписчиков."""
+    subs = load_json_file('subscribers.json', {})
+    if not os.environ.get('TELEGRAM_BOT_TOKEN'):
+        return subs
+
+    state = load_json_file('telegram_offset.json', {"offset": 0})
+    result = telegram_api('getUpdates', {'offset': state.get('offset', 0), 'timeout': 0})
+    if not result or not result.get('ok'):
+        return subs
+
+    for upd in result.get('result', []):
+        state['offset'] = upd['update_id'] + 1
+        msg = upd.get('message') or upd.get('edited_message')
+        if not msg or 'text' not in msg:
+            continue
+        chat_id = str(msg['chat']['id'])
+        text = msg['text'].strip()
+
+        if text.startswith('/start w_'):
+            game = decode_start_payload(text[len('/start w_'):].strip())
+            if game:
+                subs.setdefault(chat_id, [])
+                if game.lower() not in [g.lower() for g in subs[chat_id]]:
+                    subs[chat_id].append(game)
+                send_telegram_message(chat_id, f"🤠 Записал в твой розыскной список: «{game}».\nКак только раздача появится на доске — сразу дам знать сюда.")
+        elif text.lower().startswith('/watch '):
+            game = text[len('/watch '):].strip()
+            if game:
+                subs.setdefault(chat_id, [])
+                if game.lower() not in [g.lower() for g in subs[chat_id]]:
+                    subs[chat_id].append(game)
+                send_telegram_message(chat_id, f"🤠 Добавил «{game}» в твой розыскной список.")
+        elif text.lower().startswith('/unwatch '):
+            game = text[len('/unwatch '):].strip().lower()
+            if chat_id in subs:
+                subs[chat_id] = [g for g in subs[chat_id] if g.lower() != game]
+                send_telegram_message(chat_id, f"Убрал «{game}» из списка.")
+        elif text.lower() == '/list':
+            games = subs.get(chat_id, [])
+            reply = 'Твой розыскной список пуст. Пришли /watch Название игры, чтобы добавить.' if not games \
+                else 'Разыскиваются:\n' + '\n'.join(f'• {g}' for g in games)
+            send_telegram_message(chat_id, reply)
+        elif text.lower() in ('/start', '/help'):
+            send_telegram_message(chat_id, (
+                "🤠 Добро пожаловать в Салун Раздач!\n\n"
+                "Команды:\n"
+                "/watch Название игры — добавить в розыскной список\n"
+                "/unwatch Название игры — убрать из списка\n"
+                "/list — показать список\n\n"
+                "Или просто впиши название на сайте в поле «Мой розыскной список» — я сам всё сделаю."
+            ))
+
+    save_json_file('telegram_offset.json', state)
+    save_json_file('subscribers.json', subs)
+    return subs
+
+def check_wanted_and_notify(games):
+    subscribers = poll_telegram_commands()
+
+    # старый личный список владельца (wanted.json + секрет TELEGRAM_CHAT_ID)
+    # подмешиваем как ещё одного подписчика — для обратной совместимости
+    owner_chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+    owner_wanted = load_wanted_list()
+    if owner_chat_id and owner_wanted:
+        subscribers.setdefault(owner_chat_id, [])
+        existing_lower = [g.lower() for g in subscribers[owner_chat_id]]
+        for w in owner_wanted:
+            if w not in existing_lower:
+                subscribers[owner_chat_id].append(w)
+
+    if not subscribers:
+        print("Подписчиков розыскного списка нет — уведомления пропущены.")
+        return
+
+    notified = load_json_file('notified.json', {})
+    total_hits = 0
+
+    for chat_id, keywords in subscribers.items():
+        keywords_lower = [k.lower() for k in keywords if k.strip()]
+        if not keywords_lower:
+            continue
+        already = set(str(x) for x in notified.get(chat_id, []))
+        for g in games:
+            gid = str(g.get('id'))
+            if gid in already:
+                continue
+            title_lower = (g.get('title') or '').lower()
+            matched = next((k for k in keywords_lower if k in title_lower), None)
+            if not matched:
+                continue
+            message = (
+                f"🤠 <b>Шериф нашёл то, что вы искали!</b>\n\n"
+                f"<b>{g.get('title')}</b>\n"
+                f"Совпадение по слову: «{matched}»\n"
+                f"Награда: {g.get('worth') or 'уточняется'}\n"
+                f"Забрать: {g.get('url') or ''}"
+            )
+            if send_telegram_message(chat_id, message):
+                total_hits += 1
+            already.add(gid)
+        notified[chat_id] = sorted(already)
+
+    save_json_file('notified.json', notified)
+    print(f"Розыскной список: подписчиков — {len(subscribers)}, отправлено уведомлений — {total_hits}.")
 
 def load_wanted_list():
     try:
@@ -71,72 +225,6 @@ def load_wanted_list():
         return [str(w).strip().lower() for w in raw if str(w).strip()]
     except Exception:
         return []
-
-def load_notified_ids():
-    try:
-        with open('notified.json', 'r', encoding='utf-8') as f:
-            return set(str(x) for x in json.load(f))
-    except Exception:
-        return set()
-
-def save_notified_ids(ids):
-    with open('notified.json', 'w', encoding='utf-8') as f:
-        json.dump(sorted(ids), f)
-
-def send_telegram_message(text):
-    token = os.environ.get('TELEGRAM_BOT_TOKEN')
-    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
-    if not token or not chat_id:
-        print("Telegram не настроен (нет TELEGRAM_BOT_TOKEN/TELEGRAM_CHAT_ID в секретах) — уведомление пропущено.")
-        return False
-    try:
-        resp = requests.post(
-            f"https://api.telegram.org/bot{token}/sendMessage",
-            data={
-                "chat_id": chat_id,
-                "text": text,
-                "parse_mode": "HTML",
-                "disable_web_page_preview": False,
-            },
-            timeout=15,
-        )
-        if resp.status_code != 200:
-            print(f"Telegram вернул ошибку {resp.status_code}: {resp.text[:200]}")
-            return False
-        return True
-    except Exception as e:
-        print(f"Не удалось отправить сообщение в Telegram: {e}")
-        return False
-
-def check_wanted_and_notify(games):
-    wanted = load_wanted_list()
-    if not wanted:
-        print("wanted.json пуст или отсутствует — уведомления пропущены.")
-        return
-    notified = load_notified_ids()
-    newly_notified = set(notified)
-    hits = 0
-    for g in games:
-        gid = str(g.get('id'))
-        if gid in notified:
-            continue
-        title_lower = (g.get('title') or '').lower()
-        matched = next((w for w in wanted if w in title_lower), None)
-        if not matched:
-            continue
-        message = (
-            f"🤠 <b>Шериф нашёл то, что вы искали!</b>\n\n"
-            f"<b>{g.get('title')}</b>\n"
-            f"Совпадение по слову: «{matched}»\n"
-            f"Награда: {g.get('worth') or 'уточняется'}\n"
-            f"Забрать: {g.get('url') or ''}"
-        )
-        if send_telegram_message(message):
-            hits += 1
-        newly_notified.add(gid)
-    if newly_notified != notified:
-        save_notified_ids(newly_notified)
-    print(f"Розыскной список: совпадений найдено — {hits}.")
 
 api_games = None
 try:
