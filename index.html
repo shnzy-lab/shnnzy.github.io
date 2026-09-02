@@ -358,7 +358,11 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
 .filter-badge.active{ background:var(--rust); border-color:var(--gold-light); color:#fff2d9; box-shadow:0 0 12px rgba(156,59,46,0.7);}
 
 /* ============ РОЗЫСКНОЙ СПИСОК ============ */
-.wanted-panel{ max-width:760px; margin:1.2rem auto 0; padding:0 1.2rem; }
+.wanted-panel{
+  max-width:100%; margin:0; padding:0.9rem 1.2rem;
+  background:linear-gradient(180deg, rgba(42,26,14,0.9), rgba(42,26,14,0.96));
+  border-bottom:2px solid rgba(199,154,58,0.4);
+}
 .wanted-toggle{
   display:block; margin:0 auto; font-family:var(--font-ui); font-weight:600; letter-spacing:0.05em;
   text-transform:uppercase; font-size:0.8rem; background:var(--leather); color:var(--parchment);
@@ -366,7 +370,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
 }
 .wanted-toggle:hover{ background:var(--leather-dark); }
 .wanted-body{
-  margin-top:0.9rem; background:var(--parchment); border:1px solid var(--parchment-shadow);
+  max-width:760px; margin:0.9rem auto 0; background:var(--parchment); border:1px solid var(--parchment-shadow);
   border-radius:4px; padding:1.1rem 1.3rem; box-shadow:0 8px 18px rgba(0,0,0,0.35);
 }
 .wanted-hint{ font-family:var(--font-ui); font-size:0.78rem; line-height:1.5; color:var(--leather-dark); margin:0 0 0.9rem; }
@@ -388,12 +392,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
 }
 .wanted-items li.wanted-empty{ background:none; border:none; opacity:0.6; }
 .wanted-items .wanted-remove{ background:none; border:none; color:var(--rust); font-size:0.9rem; cursor:pointer; line-height:1; padding:0; }
-.wanted-copy-btn{
-  font-family:var(--font-ui); font-weight:600; font-size:0.75rem; text-transform:uppercase;
-  background:transparent; border:1px solid var(--leather); color:var(--leather-dark);
-  padding:0.45rem 0.9rem; border-radius:16px; cursor:pointer;
-}
-.wanted-copy-btn:hover{ background:var(--leather); color:var(--parchment); }
+.wanted-note{ font-family:var(--font-ui); font-size:0.72rem; color:var(--leather-dark); opacity:0.75; margin:0; }
 
 .poster.is-wanted{ box-shadow:0 0 0 3px var(--gold-light), 0 10px 22px rgba(0,0,0,0.45); }
 .wanted-hit{
@@ -782,17 +781,16 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     <button class="wanted-toggle" id="wantedToggle">🎯 Мой розыскной список</button>
     <div class="wanted-body" id="wantedBody" hidden>
       <p class="wanted-hint">
-        Впиши названия игр, за которыми следишь — они подсветятся особым штампом прямо на доске.
-        Список хранится только в этом браузере. Чтобы получать уведомления в Telegram, когда такая игра
-        появится в раздачах, нажми «Скопировать» и вставь список в файл <code>wanted.json</code> в репозитории —
-        бот в GitHub Action сам напишет тебе, как только найдёт совпадение.
+        Впиши название игры и нажми кнопку — откроется Telegram-бот салуна с уже готовой командой.
+        Нажми в боте «Start» — и всё, подписка готова. Как только эта игра появится на доске раздач,
+        бот сам напишет тебе. Никуда ничего копировать не нужно.
       </p>
       <div class="wanted-input-row">
-        <input type="text" id="wantedInput" placeholder="Например: Elden Ring" autocomplete="off">
-        <button id="wantedAddBtn" type="button">Добавить</button>
+        <input type="text" id="wantedInput" placeholder="Например: Elden Ring" autocomplete="off" maxlength="40">
+        <button id="wantedAddBtn" type="button">🤠 Объявить розыск</button>
       </div>
       <ul class="wanted-items" id="wantedItems"></ul>
-      <button class="wanted-copy-btn" id="wantedCopyBtn" type="button">📋 Скопировать для wanted.json</button>
+      <p class="wanted-note">Список ниже — только для памяти в этом браузере. Сама подписка живёт в Telegram, у бота.</p>
     </div>
   </section>
 
@@ -805,7 +803,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     Данные о раздачах: <a href="https://www.gamerpower.com" target="_blank" rel="noopener">GamerPower.com</a>
     &nbsp;·&nbsp; Обновлено: <span id="lastSync">—</span>
     &nbsp;·&nbsp; Доска обновляется на сервере каждые ~30&nbsp;минут, страница сверяется с ней каждые 5&nbsp;минут
-    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-30.14</span>
+    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-30.16</span>
     <br>
     <span class="author-credit">🤠 Шериф этих земель — <a href="https://steamcommunity.com/id/chivoobliiin/" target="_blank" rel="noopener">chivoobliiin</a></span>
   </footer>
@@ -1623,10 +1621,23 @@ document.getElementById('wantedToggle').addEventListener('click', ()=>{
   const body = document.getElementById('wantedBody');
   body.hidden = !body.hidden;
 });
+
+// Публичное имя пользователя Telegram-бота салуна (без @). Впиши сюда после
+// создания бота через @BotFather — например 'SaloonRazdachBot'.
+const WANTED_BOT_USERNAME = '';
+
+function toBase64Url(str){
+  const bytes = new TextEncoder().encode(str);
+  let binary = '';
+  bytes.forEach(b => binary += String.fromCharCode(b));
+  return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+
 document.getElementById('wantedAddBtn').addEventListener('click', ()=>{
   const input = document.getElementById('wantedInput');
   const val = input.value.trim();
   if(!val) return;
+
   const list = getWantedList();
   if(!list.some(w => w.toLowerCase()===val.toLowerCase())){
     list.push(val);
@@ -1634,6 +1645,15 @@ document.getElementById('wantedAddBtn').addEventListener('click', ()=>{
     renderWantedList();
     if(allGiveaways.length) render();
   }
+
+  if(WANTED_BOT_USERNAME){
+    const payload = toBase64Url(val);
+    const tgUrl = `https://t.me/${WANTED_BOT_USERNAME}?start=w_${payload}`;
+    window.open(tgUrl, '_blank', 'noopener');
+  }else{
+    alert('Бот салуна ещё не подключён — владельцу сайта нужно вписать имя бота в код (WANTED_BOT_USERNAME). Игра пока сохранена только в этом браузере.');
+  }
+
   input.value = '';
   input.focus();
 });
@@ -1648,18 +1668,6 @@ document.getElementById('wantedItems').addEventListener('click', (e)=>{
   saveWantedList(list);
   renderWantedList();
   if(allGiveaways.length) render();
-});
-document.getElementById('wantedCopyBtn').addEventListener('click', ()=>{
-  const list = getWantedList();
-  const btn = document.getElementById('wantedCopyBtn');
-  const original = btn.textContent;
-  navigator.clipboard.writeText(JSON.stringify(list, null, 2)).then(()=>{
-    btn.textContent = '✅ Скопировано! Вставь в wanted.json';
-    setTimeout(()=> btn.textContent = original, 2200);
-  }).catch(()=>{
-    btn.textContent = '⚠️ Не удалось скопировать';
-    setTimeout(()=> btn.textContent = original, 2200);
-  });
 });
 renderWantedList();
 
