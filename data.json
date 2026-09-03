@@ -1,6 +1,18 @@
 {
-  "generated_at": "2026-09-03T13:10:00Z",
+  "generated_at": "2026-09-03T18:16:36Z",
   "giveaways": [
+    {
+      "id": 3763,
+      "title": "Alone With You (Epic Games) Giveaway",
+      "description": "Looking for some romance? Grab Alone With You for free via Epic Games Store! Alone With You is a sci-fi adventure game with pixel graphics and visual novel storytelling.",
+      "worth": "$9.99",
+      "image": "https://www.gamerpower.com/offers/1b/6a998bd861dec.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/6a998bd861dec.jpg",
+      "url": "https://www.gamerpower.com/open/alone-with-you-epic-games-giveaway",
+      "platforms": "PC, Epic Games Store",
+      "end_date": "2026-09-10 23:59:00",
+      "type": "game"
+    },
     {
       "id": 3709,
       "title": "NoRush! - Tower Edition (Epic Games) Giveaways",
@@ -11,30 +23,6 @@
       "url": "https://www.gamerpower.com/open/norush-tower-edition-epic-games-giveaways",
       "platforms": "PC, Epic Games Store",
       "end_date": "2026-09-09 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3759,
-      "title": "Rival Stars Horse Racing (Epic Games) Giveaway",
-      "description": "Ever wished you could get a horse? Well, you can grab Rival Stars Horse Racing: Desktop Edition for free on the Epic Games Store instead! Rival Stars Horse Racing: Desktop Edition is a 3d relaxing Horse racing game with a breeding system and several gameplay modes.",
-      "worth": "$29.99",
-      "image": "https://www.gamerpower.com/offers/1b/6a90554f27ee1.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6a90554f27ee1.jpg",
-      "url": "https://www.gamerpower.com/open/rival-stars-horse-racing-epic-games-giveaway",
-      "platforms": "PC, Epic Games Store",
-      "end_date": "2026-09-03 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 2336,
-      "title": "Breathedge (Epic Games) Giveaway",
-      "description": "Score Breathedge without any cost on Epic Games Store! Breathedge is an outer space survival adventure game similar to Subnautica. Check it out!",
-      "worth": "$24.99",
-      "image": "https://www.gamerpower.com/offers/1b/644a8e3ec8e21.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/644a8e3ec8e21.jpg",
-      "url": "https://www.gamerpower.com/open/breathedge-epic-games-giveaway",
-      "platforms": "PC, Epic Games Store",
-      "end_date": "2026-09-03 23:59:00",
       "type": "game"
     }
   ]
