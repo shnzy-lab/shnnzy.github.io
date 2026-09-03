@@ -347,7 +347,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
 .filter-belt{
   position:sticky; top:0; z-index:50; display:flex; flex-wrap:wrap; gap:0.6rem; justify-content:center;
   padding:1rem 1.2rem; background:linear-gradient(180deg, rgba(42,26,14,0.96), rgba(42,26,14,0.9));
-  border-bottom:4px double var(--gold); backdrop-filter:blur(2px);
+  backdrop-filter:blur(2px);
 }
 .filter-badge{
   font-family:var(--font-ui); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; font-size:0.82rem;
@@ -359,9 +359,9 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
 
 /* ============ РОЗЫСКНОЙ СПИСОК ============ */
 .wanted-panel{
-  max-width:100%; margin:0; padding:0.9rem 1.2rem;
+  max-width:100%; margin:0; padding:0.9rem 1.2rem 1.1rem;
   background:linear-gradient(180deg, rgba(42,26,14,0.9), rgba(42,26,14,0.96));
-  border-bottom:2px solid rgba(199,154,58,0.4);
+  border-bottom:4px double var(--gold);
 }
 .wanted-toggle{
   display:block; margin:0 auto; font-family:var(--font-ui); font-weight:600; letter-spacing:0.05em;
@@ -803,7 +803,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     Данные о раздачах: <a href="https://www.gamerpower.com" target="_blank" rel="noopener">GamerPower.com</a>
     &nbsp;·&nbsp; Обновлено: <span id="lastSync">—</span>
     &nbsp;·&nbsp; Доска обновляется на сервере каждые ~30&nbsp;минут, страница сверяется с ней каждые 5&nbsp;минут
-    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-30.16</span>
+    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-30.17</span>
     <br>
     <span class="author-credit">🤠 Шериф этих земель — <a href="https://steamcommunity.com/id/chivoobliiin/" target="_blank" rel="noopener">chivoobliiin</a></span>
   </footer>
