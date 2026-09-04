@@ -1,7 +1,7 @@
 name: Auto Update Games
 on:
   schedule:
-    - cron: '0 */3 * * *' # Запуск каждые 3 часа
+    - cron: '*/15 * * * *' # Запуск каждые 15 минут
   workflow_dispatch: # Позволяет запускать вручную кнопку в панели
 
 permissions:
