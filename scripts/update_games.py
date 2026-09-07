@@ -111,19 +111,40 @@ def send_telegram_message(chat_id, text):
     })
     return bool(result and result.get('ok'))
 
-def poll_telegram_commands():
+def poll_telegram_commands(games):
     """Читаем новые сообщения боту (команды /watch, /unwatch, /list, ссылки со старта
-    сайта) и обновляем subscribers.json. Возвращает актуальный словарь подписчиков."""
+    сайта) и обновляем subscribers.json. games — свежий список раздач, чтобы сразу
+    сказать «уже есть на доске», если совпадение находится в момент подписки."""
     subs = load_json_file('subscribers.json', {})
     if not os.environ.get('TELEGRAM_BOT_TOKEN'):
+        print("Telegram: TELEGRAM_BOT_TOKEN не найден в секретах — бот не проверяет сообщения.")
         return subs
 
     state = load_json_file('telegram_offset.json', {"offset": 0})
     result = telegram_api('getUpdates', {'offset': state.get('offset', 0), 'timeout': 0})
     if not result or not result.get('ok'):
+        print(f"Telegram: getUpdates не вернул успешный ответ: {result}")
         return subs
 
-    for upd in result.get('result', []):
+    updates = result.get('result', [])
+    print(f"Telegram: получено новых сообщений — {len(updates)}.")
+
+    def already_on_board(keyword):
+        kw = keyword.lower()
+        return next((g for g in games if kw in (g.get('title') or '').lower()), None)
+
+    def confirm_and_check(chat_id, game, base_text):
+        hit = already_on_board(game)
+        if hit:
+            send_telegram_message(
+                chat_id,
+                f"{base_text}\n\n🎯 Кстати, она уже висит на доске прямо сейчас!\n"
+                f"<b>{hit.get('title')}</b>\nЗабрать: {hit.get('url') or ''}"
+            )
+        else:
+            send_telegram_message(chat_id, base_text)
+
+    for upd in updates:
         state['offset'] = upd['update_id'] + 1
         msg = upd.get('message') or upd.get('edited_message')
         if not msg or 'text' not in msg:
@@ -137,23 +158,23 @@ def poll_telegram_commands():
                 subs.setdefault(chat_id, [])
                 if game.lower() not in [g.lower() for g in subs[chat_id]]:
                     subs[chat_id].append(game)
-                send_telegram_message(chat_id, f"🤠 Записал в твой розыскной список: «{game}».\nКак только раздача появится на доске — сразу дам знать сюда.")
+                confirm_and_check(chat_id, game, f"🤠 Записал в твой розыскной список: «{game}».\nКак только раздача появится на доске — сразу дам знать сюда.")
         elif text.lower().startswith('/watch '):
             game = text[len('/watch '):].strip()
             if game:
                 subs.setdefault(chat_id, [])
                 if game.lower() not in [g.lower() for g in subs[chat_id]]:
                     subs[chat_id].append(game)
-                send_telegram_message(chat_id, f"🤠 Добавил «{game}» в твой розыскной список.")
+                confirm_and_check(chat_id, game, f"🤠 Добавил «{game}» в твой розыскной список.")
         elif text.lower().startswith('/unwatch '):
             game = text[len('/unwatch '):].strip().lower()
             if chat_id in subs:
                 subs[chat_id] = [g for g in subs[chat_id] if g.lower() != game]
                 send_telegram_message(chat_id, f"Убрал «{game}» из списка.")
         elif text.lower() == '/list':
-            games = subs.get(chat_id, [])
-            reply = 'Твой розыскной список пуст. Пришли /watch Название игры, чтобы добавить.' if not games \
-                else 'Разыскиваются:\n' + '\n'.join(f'• {g}' for g in games)
+            watched = subs.get(chat_id, [])
+            reply = 'Твой розыскной список пуст. Пришли /watch Название игры, чтобы добавить.' if not watched \
+                else 'Разыскиваются:\n' + '\n'.join(f'• {g}' for g in watched)
             send_telegram_message(chat_id, reply)
         elif text.lower() in ('/start', '/help'):
             send_telegram_message(chat_id, (
@@ -170,7 +191,7 @@ def poll_telegram_commands():
     return subs
 
 def check_wanted_and_notify(games):
-    subscribers = poll_telegram_commands()
+    subscribers = poll_telegram_commands(games)
 
     # старый личный список владельца (wanted.json + секрет TELEGRAM_CHAT_ID)
     # подмешиваем как ещё одного подписчика — для обратной совместимости
@@ -291,7 +312,6 @@ if isinstance(api_games, list):
     print(f"Прошли фильтр: {len(current_games)} | по статусу: {skipped_status} | исключённые источники (Itch.io/IndieGala/Stove/Alienware): {skipped_source} | по платформе: {skipped_platform} | мусор по словам: {skipped_junk} | по типу (loot/beta без DLC-признаков): {skipped_type}")
 
 if current_games:
-    check_wanted_and_notify(current_games)
     payload = {
         "generated_at": datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
         "giveaways": current_games[:40]
@@ -301,3 +321,7 @@ if current_games:
     print(f"База данных успешно обновлена! Раздач: {len(current_games)}")
 else:
     print("Новых данных нет (API недоступен, заблокирован или пусто после фильтра) — data.json не тронут.")
+
+# Проверяем Telegram-сообщения и уведомляем подписчиков ВСЕГДА, при каждом
+# запуске — не только тогда, когда нашлись новые игры (иначе бот молчит).
+check_wanted_and_notify(current_games)
