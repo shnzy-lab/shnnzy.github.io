@@ -644,12 +644,12 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
   </div>
   <div class="rail-bed"></div>
   <div class="rail-track"></div>
+  <div class="mountains layer-1"></div>
   <div class="cacti" id="scenery">
     <div class="cactus cac1"><svg viewBox="0 0 40 80" fill="#1c1108"><path d="M18 80 L18 30 Q18 20 26 20 Q30 20 30 26 L30 40 L34 40 L34 26 Q34 14 24 14 L24 4 Q24 0 20 0 Q16 0 16 4 L16 30 L10 30 Q4 30 4 24 L4 12 L0 12 L0 24 Q0 34 10 34 L16 34 L16 80 Z"/></svg></div>
     <div class="cactus cac2"><svg viewBox="0 0 40 80" fill="#1c1108"><path d="M18 80 L18 20 Q18 10 26 10 L26 0 L22 0 L22 10 Q14 10 14 20 L14 80 Z"/></svg></div>
     <div class="cactus cac3"><svg viewBox="0 0 40 80" fill="#1c1108"><path d="M18 80 L18 10 Q18 0 22 0 Q26 0 26 10 L26 80 Z"/></svg></div>
   </div>
-  <div class="mountains layer-1"></div>
   <div class="dust" id="dust"></div>
   <div class="tumbleweed">
     <svg viewBox="0 0 40 40"><g fill="none" stroke="#3a2415" stroke-width="1.4" opacity="0.8">
@@ -803,7 +803,7 @@ body.time-night .lantern .glow, body.time-dusk .lantern .glow{
     Данные о раздачах: <a href="https://www.gamerpower.com" target="_blank" rel="noopener">GamerPower.com</a>
     &nbsp;·&nbsp; Обновлено: <span id="lastSync">—</span>
     &nbsp;·&nbsp; Доска обновляется на сервере каждые ~30&nbsp;минут, страница сверяется с ней каждые 5&nbsp;минут
-    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-30.17</span>
+    &nbsp;·&nbsp; <span style="opacity:0.5;">build 2026-08-30.18</span>
     <br>
     <span class="author-credit">🤠 Шериф этих земель — <a href="https://steamcommunity.com/id/chivoobliiin/" target="_blank" rel="noopener">chivoobliiin</a></span>
   </footer>
@@ -1624,7 +1624,7 @@ document.getElementById('wantedToggle').addEventListener('click', ()=>{
 
 // Публичное имя пользователя Telegram-бота салуна (без @). Впиши сюда после
 // создания бота через @BotFather — например 'SaloonRazdachBot'.
-const WANTED_BOT_USERNAME = 'smoked_gunpowder_bot';
+const WANTED_BOT_USERNAME = '';
 
 function toBase64Url(str){
   const bytes = new TextEncoder().encode(str);
