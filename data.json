@@ -1,6 +1,30 @@
 {
-  "generated_at": "2026-09-17T11:42:55Z",
+  "generated_at": "2026-09-17T15:40:20Z",
   "giveaways": [
+    {
+      "id": 3782,
+      "title": "Shogun Showdown (Epic Games) Giveaway",
+      "description": "Looking for a new rogue-like game? Grab Shogun Showdown for free via Epic Games Store Shogun Showdown is a cool turn-based combat game with rogue-like and deck-building elements.",
+      "worth": "$14.99",
+      "image": "https://www.gamerpower.com/offers/1b/6aac02328ba2e.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/6aac02328ba2e.jpg",
+      "url": "https://www.gamerpower.com/open/shogun-showdown-epic-games-giveaway",
+      "platforms": "PC, Epic Games Store",
+      "end_date": "2026-09-24 23:59:00",
+      "type": "game"
+    },
+    {
+      "id": 3781,
+      "title": "Mindcop (Epic Games) Giveaway",
+      "description": "Score Mindcop without any cost via Epic Games Store! Mindcop is a stylish 2d non-linear detective game with real-time puzzle gaming. Don´t miss it!\r\n\r\n*Please note this game is also available via Epic Games App!",
+      "worth": "$14.99",
+      "image": "https://www.gamerpower.com/offers/1b/6aac007c3171a.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/6aac007c3171a.jpg",
+      "url": "https://www.gamerpower.com/open/mindcop-epic-games-giveaway",
+      "platforms": "PC, Android, iOS, Epic Games Store",
+      "end_date": "2026-09-24 23:59:00",
+      "type": "game"
+    },
     {
       "id": 3779,
       "title": "Space Menace (Steam) Giveaway",
@@ -35,30 +59,6 @@
       "url": "https://www.gamerpower.com/open/crystal-crisis-steam-giveaway",
       "platforms": "PC, Steam",
       "end_date": "2026-09-22 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3774,
-      "title": "Astral Ascent (Epic Games) Giveaway",
-      "description": "Claim Astral Ascent for free via Epic Games Store! Astral Ascent is a fun 2D platformer roguelite game with addicting gameplay and great combat.",
-      "worth": "$24.99",
-      "image": "https://www.gamerpower.com/offers/1b/6aa2c8331c791.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6aa2c8331c791.jpg",
-      "url": "https://www.gamerpower.com/open/astral-ascent-epic-games-giveaway",
-      "platforms": "PC, Epic Games Store",
-      "end_date": "2026-09-17 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3773,
-      "title": "Luftrausers (Epic Games) Giveaway",
-      "description": "Score Luftrausers for free via Epic Games Store! Luftrausers is a stylish arcade shooter with unique weapons, ridiculous combos, and challenging missions. Don´t miss it!",
-      "worth": "$9.99",
-      "image": "https://www.gamerpower.com/offers/1b/6aa2c633c21e7.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6aa2c633c21e7.jpg",
-      "url": "https://www.gamerpower.com/open/luftrausers-epic-games-giveaway",
-      "platforms": "PC, Epic Games Store",
-      "end_date": "2026-09-17 23:59:00",
       "type": "game"
     }
   ]
