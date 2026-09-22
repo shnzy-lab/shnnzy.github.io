@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-22T06:15:19Z",
+  "generated_at": "2026-09-22T11:57:03Z",
   "giveaways": [
     {
       "id": 3784,
@@ -59,18 +59,6 @@
       "url": "https://www.gamerpower.com/open/for-honor-ubisoft-giveaway",
       "platforms": "PC, Ubisoft Connect",
       "end_date": "2026-09-28 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3776,
-      "title": "Crystal Crisis (Steam) Giveaway",
-      "description": "Score Crystal Crisis for free via Steam! Crystal Crisis is a fun puzzle game with an all-star cast of heroes! Don´t miss this amazing game!",
-      "worth": "$19.99",
-      "image": "https://www.gamerpower.com/offers/1b/6aa7d795dadd3.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6aa7d795dadd3.jpg",
-      "url": "https://www.gamerpower.com/open/crystal-crisis-steam-giveaway",
-      "platforms": "PC, Steam",
-      "end_date": "2026-09-22 23:59:00",
       "type": "game"
     }
   ]
