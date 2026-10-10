@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-10T18:27:19Z",
+  "generated_at": "2026-10-10T21:56:41Z",
   "giveaways": [
     {
       "id": 3810,
@@ -47,18 +47,6 @@
       "url": "https://www.gamerpower.com/open/out-of-sight-epic-games-giveaway",
       "platforms": "PC, Epic Games Store",
       "end_date": "2026-10-15 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3804,
-      "title": "Spooky Cats Steam Key Giveaway",
-      "description": "Fanatical is giving away Spooky Cats Steam keys for free! Grab your Steam key before it's too late!",
-      "worth": "$2.99",
-      "image": "https://www.gamerpower.com/offers/1b/6ac6201af0cf6.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6ac6201af0cf6.jpg",
-      "url": "https://www.gamerpower.com/open/spooky-cats-steam-key-giveaway",
-      "platforms": "PC, Steam",
-      "end_date": "2026-10-09 23:59:00",
       "type": "game"
     }
   ]
