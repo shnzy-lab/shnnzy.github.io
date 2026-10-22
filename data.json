@@ -1,6 +1,30 @@
 {
-  "generated_at": "2026-10-22T11:20:41Z",
+  "generated_at": "2026-10-22T15:58:11Z",
   "giveaways": [
+    {
+      "id": 3824,
+      "title": "Sker Ritual (Epic Games) Giveaway",
+      "description": "Looking for a Call of Duty Zombies-like experience? Get Sker Ritual for free on Epic Games Store! Sker Ritual is a cool 3d co-op horde shooter game where you can play solo or with up to 4 players.",
+      "worth": "$19.99",
+      "image": "https://www.gamerpower.com/offers/1b/sker.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/sker.jpg",
+      "url": "https://www.gamerpower.com/open/sker-ritual",
+      "platforms": "PC, Epic Games Store",
+      "end_date": "2026-10-29 23:59:59",
+      "type": "game"
+    },
+    {
+      "id": 3823,
+      "title": "Home (Epic Games) Giveaway",
+      "description": "Don´t miss this indie game! Grab Home for free via Epic Games Store! Home is a indie murder mystery game set in a 2d pixel world.\n\n*Please note this game is also available via Epic Games App (Android and iOS)!",
+      "worth": "$4.99",
+      "image": "https://www.gamerpower.com/offers/1b/home.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/home.jpg",
+      "url": "https://www.gamerpower.com/open/home",
+      "platforms": "PC, Android, iOS, Epic Games Store",
+      "end_date": "2026-10-29 23:59:59",
+      "type": "game"
+    },
     {
       "id": 3822,
       "title": "Terraspace (Epic Games) Giveaway",
@@ -11,30 +35,6 @@
       "url": "https://www.gamerpower.com/open/terraspace-epic-games-giveaway",
       "platforms": "PC, Epic Games Store",
       "end_date": "2026-10-27 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3817,
-      "title": "Agent A: A puzzle in disguise (Epic Games) Giveaway",
-      "description": "Your mission, should you choose to accept it, is to claim this giveaway! Yes, you can grab Agent A: A Puzzle in Disguise for free from the Epic Games Store at no cost! Agent A: A Puzzle in Disguise is a stylish spy game packed with clever puzzles.\n\n*Please note this game is also available via Epic Games App (Android and iOS)!",
-      "worth": "$19.99",
-      "image": "https://www.gamerpower.com/offers/1b/6ad0eb85db498.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6ad0eb85db498.jpg",
-      "url": "https://www.gamerpower.com/open/agent-a-a-puzzle-in-disguise-epic-games-giveaway",
-      "platforms": "PC, Android, iOS, Epic Games Store",
-      "end_date": "2026-10-22 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3816,
-      "title": "Bad Cheese (Epic Games) Giveaway",
-      "description": "Claim Bad Cheese for free on the Epic Games Store! Bad Cheese is a very dark cartoon-style first-person game inspired by the eerie charm of 1920s animation.",
-      "worth": "$12.99",
-      "image": "https://www.gamerpower.com/offers/1b/6ad0ea7639b78.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6ad0ea7639b78.jpg",
-      "url": "https://www.gamerpower.com/open/bad-cheese-epic-games-giveaway",
-      "platforms": "PC, Epic Games Store",
-      "end_date": "2026-10-22 23:59:00",
       "type": "game"
     }
   ]
