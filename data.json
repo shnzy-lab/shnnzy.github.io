@@ -1,6 +1,18 @@
 {
-  "generated_at": "2026-10-28T18:43:11Z",
+  "generated_at": "2026-10-28T22:52:53Z",
   "giveaways": [
+    {
+      "id": 3830,
+      "title": "Free itch.io Games Bundle",
+      "description": "Claim this bundle (worth $384) and download 116 games for free on itch.io! No strings attached!",
+      "worth": "$384.00",
+      "image": "https://www.gamerpower.com/offers/1b/6ae264e50edb5.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/6ae264e50edb5.jpg",
+      "url": "https://www.gamerpower.com/open/free-itch-io-games-bundle",
+      "platforms": "PC, Itch.io, DRM-Free",
+      "end_date": "2026-11-22 23:59:00",
+      "type": "game"
+    },
     {
       "id": 3825,
       "title": "MAFIA HOTEL (Epic Games) Giveaway",
