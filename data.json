@@ -1,6 +1,30 @@
 {
-  "generated_at": "2026-10-29T15:34:51Z",
+  "generated_at": "2026-10-29T20:38:29Z",
   "giveaways": [
+    {
+      "id": 3834,
+      "title": "Hexologic (Steam) Giveaway",
+      "description": "Fall in love in with Sudoku again! Grab Hexologic for free via Steam! Hexologic is a Sudoku-like puzzle game with nice visuals and relaxing music. Don´t miss it!",
+      "worth": "$4.99",
+      "image": "https://www.gamerpower.com/offers/1b/6ae37c96c0b45.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/6ae37c96c0b45.jpg",
+      "url": "https://www.gamerpower.com/open/hexologic-steam-giveaway",
+      "platforms": "PC, Steam",
+      "end_date": "2026-10-31 23:59:00",
+      "type": "game"
+    },
+    {
+      "id": 3426,
+      "title": "Sorry We're Closed (Epic Games) Giveaway",
+      "description": "Score Sorry We're Closed for free on Epic Games Store! Sorry We're Closed is a single-player survival game with arcade-style combat, puzzles and multiple endings. Check it out!",
+      "worth": "$24.99",
+      "image": "https://www.gamerpower.com/offers/1b/69481a230819b.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/69481a230819b.jpg",
+      "url": "https://www.gamerpower.com/open/sorry-we-re-closed-epic-games-giveaway",
+      "platforms": "PC, Epic Games Store",
+      "end_date": "2026-11-05 23:59:00",
+      "type": "game"
+    },
     {
       "id": 3830,
       "title": "Free itch.io Games Bundle",
@@ -23,42 +47,6 @@
       "url": "https://www.gamerpower.com/open/mafia-hotel-epic-games-giveaway",
       "platforms": "PC, Epic Games Store",
       "end_date": "2026-11-01 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3824,
-      "title": "Sker Ritual (Epic Games) Giveaway",
-      "description": "Looking for a Call of Duty Zombies-like experience? Get Sker Ritual for free on Epic Games Store! Sker Ritual is a cool 3d co-op horde shooter game where you can play solo or with up to 4 players.",
-      "worth": "$19.99",
-      "image": "https://www.gamerpower.com/offers/1b/sker.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/sker.jpg",
-      "url": "https://www.gamerpower.com/open/sker-ritual",
-      "platforms": "PC, Epic Games Store",
-      "end_date": "2026-10-29 23:59:59",
-      "type": "game"
-    },
-    {
-      "id": 3823,
-      "title": "Home (Epic Games) Giveaway",
-      "description": "Don´t miss this indie game! Grab Home for free via Epic Games Store! Home is a indie murder mystery game set in a 2d pixel world.\n\n*Please note this game is also available via Epic Games App (Android and iOS)!",
-      "worth": "$4.99",
-      "image": "https://www.gamerpower.com/offers/1b/home.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/home.jpg",
-      "url": "https://www.gamerpower.com/open/home",
-      "platforms": "PC, Android, iOS, Epic Games Store",
-      "end_date": "2026-10-29 23:59:59",
-      "type": "game"
-    },
-    {
-      "id": 3822,
-      "title": "Terraspace (Epic Games) Giveaway",
-      "description": "Download Terraspace for free via Epic Games Store! Terraspace is a casual city builder game about creating conditions for life on unsuitable planets.",
-      "worth": "$7.99",
-      "image": "https://www.gamerpower.com/offers/1b/6ad9256e3eef5.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6ad9256e3eef5.jpg",
-      "url": "https://www.gamerpower.com/open/terraspace-epic-games-giveaway",
-      "platforms": "PC, Epic Games Store",
-      "end_date": "2026-10-27 23:59:00",
       "type": "game"
     }
   ]
