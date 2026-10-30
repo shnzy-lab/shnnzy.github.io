@@ -1,6 +1,30 @@
 {
-  "generated_at": "2026-10-30T13:21:59Z",
+  "generated_at": "2026-10-30T18:46:04Z",
   "giveaways": [
+    {
+      "id": 3836,
+      "title": "Asleep: Act 1 (Steam) Giveaway",
+      "description": "Claim Asleep: Act 1 for free via Steam until 2 Nov! Asleep is a 2d adventure game with dark atmosphere and challenging puzzles.",
+      "worth": "$9.99",
+      "image": "https://www.gamerpower.com/offers/1b/6ae4ceb2e38bb.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/6ae4ceb2e38bb.jpg",
+      "url": "https://www.gamerpower.com/open/asleep-act-1-steam-giveaway",
+      "platforms": "PC, Steam",
+      "end_date": "2026-11-02 23:59:00",
+      "type": "game"
+    },
+    {
+      "id": 3835,
+      "title": "A New Beginning: Final Cut (GOG) Giveaway",
+      "description": "Score A New Beginning: Final Cut for free via GOG! A New Beginning - Final Cut is a cinematic adventure game with amazing graphics and great characters. Don´t miss it!",
+      "worth": "$9.99",
+      "image": "https://www.gamerpower.com/offers/1b/6ae4af4cbf862.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/6ae4af4cbf862.jpg",
+      "url": "https://www.gamerpower.com/open/a-new-beginning-final-cut-gog-giveaway",
+      "platforms": "PC, GOG, DRM-Free",
+      "end_date": "2026-11-02 23:59:00",
+      "type": "game"
+    },
     {
       "id": 3834,
       "title": "Hexologic (Steam) Giveaway",
