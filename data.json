@@ -1,6 +1,30 @@
 {
-  "generated_at": "2026-10-31T18:46:38Z",
+  "generated_at": "2026-10-31T22:16:43Z",
   "giveaways": [
+    {
+      "id": 3838,
+      "title": "Gladiator: Blades of Fury (Epic Games) Giveaway",
+      "description": "Download Gladiator: Blades of Fury for free via Epic Games Store! Gladiator: Blades of Fury is a 3d melee fighting game set during the medieval period.",
+      "worth": "$9.99",
+      "image": "https://www.gamerpower.com/offers/1b/6ae6414cb0f67.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/6ae6414cb0f67.jpg",
+      "url": "https://www.gamerpower.com/open/gladiator-blades-of-fury-epic-games-giveaway",
+      "platforms": "PC, Epic Games Store",
+      "end_date": "2026-11-08 23:59:00",
+      "type": "game"
+    },
+    {
+      "id": 3837,
+      "title": "Quiztopia: The Ultimate Trivia (Epic Games) Giveaway",
+      "description": "Claim Quiztopia: The Ultimate Trivia for free via Epic Games Store. Quiztopia: The Ultimate Trivia is a indie trivia game for kids for age 5 and above.",
+      "worth": "$7.99",
+      "image": "https://www.gamerpower.com/offers/1b/6ae64030ca5f5.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/6ae64030ca5f5.jpg",
+      "url": "https://www.gamerpower.com/open/quiztopia-the-ultimate-trivia-epic-games-giveaway",
+      "platforms": "PC, Epic Games Store",
+      "end_date": "2026-11-08 23:59:00",
+      "type": "game"
+    },
     {
       "id": 3836,
       "title": "Asleep: Act 1 (Steam) Giveaway",
@@ -23,18 +47,6 @@
       "url": "https://www.gamerpower.com/open/a-new-beginning-final-cut-gog-giveaway",
       "platforms": "PC, GOG, DRM-Free",
       "end_date": "2026-11-02 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3834,
-      "title": "Hexologic (Steam) Giveaway",
-      "description": "Fall in love in with Sudoku again! Grab Hexologic for free via Steam! Hexologic is a Sudoku-like puzzle game with nice visuals and relaxing music. Don´t miss it!",
-      "worth": "$4.99",
-      "image": "https://www.gamerpower.com/offers/1b/6ae37c96c0b45.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6ae37c96c0b45.jpg",
-      "url": "https://www.gamerpower.com/open/hexologic-steam-giveaway",
-      "platforms": "PC, Steam",
-      "end_date": "2026-10-31 23:59:00",
       "type": "game"
     },
     {
