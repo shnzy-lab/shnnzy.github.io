@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-02T09:49:46Z",
+  "generated_at": "2026-11-02T20:01:42Z",
   "giveaways": [
     {
       "id": 3842,
@@ -74,30 +74,6 @@
       "type": "game"
     },
     {
-      "id": 3836,
-      "title": "Asleep: Act 1 (Steam) Giveaway",
-      "description": "Claim Asleep: Act 1 for free via Steam until 2 Nov! Asleep is a 2d adventure game with dark atmosphere and challenging puzzles.",
-      "worth": "$9.99",
-      "image": "https://www.gamerpower.com/offers/1b/6ae4ceb2e38bb.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6ae4ceb2e38bb.jpg",
-      "url": "https://www.gamerpower.com/open/asleep-act-1-steam-giveaway",
-      "platforms": "PC, Steam",
-      "end_date": "2026-11-02 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3835,
-      "title": "A New Beginning: Final Cut (GOG) Giveaway",
-      "description": "Score A New Beginning: Final Cut for free via GOG! A New Beginning - Final Cut is a cinematic adventure game with amazing graphics and great characters. Don´t miss it!",
-      "worth": "$9.99",
-      "image": "https://www.gamerpower.com/offers/1b/6ae4af4cbf862.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6ae4af4cbf862.jpg",
-      "url": "https://www.gamerpower.com/open/a-new-beginning-final-cut-gog-giveaway",
-      "platforms": "PC, GOG, DRM-Free",
-      "end_date": "2026-11-02 23:59:00",
-      "type": "game"
-    },
-    {
       "id": 3426,
       "title": "Sorry We're Closed (Epic Games) Giveaway",
       "description": "Score Sorry We're Closed for free on Epic Games Store! Sorry We're Closed is a single-player survival game with arcade-style combat, puzzles and multiple endings. Check it out!",
@@ -119,18 +95,6 @@
       "url": "https://www.gamerpower.com/open/free-itch-io-games-bundle",
       "platforms": "PC, Itch.io, DRM-Free",
       "end_date": "2026-11-22 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3825,
-      "title": "MAFIA HOTEL (Epic Games) Giveaway",
-      "description": "Claim MAFIA HOTEL for free via Epic Games Store! MAFIA HOTEL is a 3d multiplayer social deduction game for up to 16 players.",
-      "worth": "$1.99",
-      "image": "https://www.gamerpower.com/offers/1b/6add376bc36a0.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6add376bc36a0.jpg",
-      "url": "https://www.gamerpower.com/open/mafia-hotel-epic-games-giveaway",
-      "platforms": "PC, Epic Games Store",
-      "end_date": "2026-11-01 23:59:00",
       "type": "game"
     }
   ]
