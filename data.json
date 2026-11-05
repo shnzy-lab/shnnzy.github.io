@@ -1,6 +1,18 @@
 {
-  "generated_at": "2026-11-05T11:32:53Z",
+  "generated_at": "2026-11-05T18:59:46Z",
   "giveaways": [
+    {
+      "id": 3845,
+      "title": "Flotsam (Epic Games) Giveaway",
+      "description": "Set sail with this giveaway! Download Flotsam for free via Epic Games Store! Flotsam is a cool 3d city-builder in a flooded world. Don´t miss it!",
+      "worth": "$24.99",
+      "image": "https://www.gamerpower.com/offers/1b/6aeca99004384.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/6aeca99004384.jpg",
+      "url": "https://www.gamerpower.com/open/flotsam-epic-games-giveaway",
+      "platforms": "PC, Epic Games Store",
+      "end_date": "2026-11-12 23:59:00",
+      "type": "game"
+    },
     {
       "id": 3843,
       "title": "Letter Quest: Grimm's Journey Remastered Steam Key Giveaway",
@@ -83,18 +95,6 @@
       "url": "https://www.gamerpower.com/open/quiztopia-the-ultimate-trivia-epic-games-giveaway",
       "platforms": "PC, Epic Games Store",
       "end_date": "2026-11-08 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3426,
-      "title": "Sorry We're Closed (Epic Games) Giveaway",
-      "description": "Score Sorry We're Closed for free on Epic Games Store! Sorry We're Closed is a single-player survival game with arcade-style combat, puzzles and multiple endings. Check it out!",
-      "worth": "$24.99",
-      "image": "https://www.gamerpower.com/offers/1b/69481a230819b.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/69481a230819b.jpg",
-      "url": "https://www.gamerpower.com/open/sorry-we-re-closed-epic-games-giveaway",
-      "platforms": "PC, Epic Games Store",
-      "end_date": "2026-11-05 23:59:00",
       "type": "game"
     },
     {
