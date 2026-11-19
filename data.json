@@ -1,6 +1,18 @@
 {
-  "generated_at": "2026-11-19T13:55:59Z",
+  "generated_at": "2026-11-19T22:01:14Z",
   "giveaways": [
+    {
+      "id": 3853,
+      "title": "Mark of the Deep (Epic Games) Giveaway",
+      "description": "Score Mark of the Deep for free on Epic Games Store! Mark of the Deep is a pirate-themed adventure game with elements from Metroidvania and Souls-Like games.",
+      "worth": "$19.99",
+      "image": "https://www.gamerpower.com/offers/1b/6aff1d0e4942d.jpg",
+      "thumbnail": "https://www.gamerpower.com/offers/1/6aff1d0e4942d.jpg",
+      "url": "https://www.gamerpower.com/open/mark-of-the-deep-epic-games-giveaway",
+      "platforms": "PC, Epic Games Store",
+      "end_date": "2026-11-26 23:59:00",
+      "type": "game"
+    },
     {
       "id": 3852,
       "title": "Contractor: The Clean Up Part 2 (Epic Games) Giveaway",
@@ -11,18 +23,6 @@
       "url": "https://www.gamerpower.com/open/contractor-the-clean-up-part-2-epic-games-giveaway",
       "platforms": "PC, Epic Games Store",
       "end_date": "2026-12-02 23:59:00",
-      "type": "game"
-    },
-    {
-      "id": 3850,
-      "title": "Knightica (Epic Games) Giveaway",
-      "description": "Score Knightica for free via Epic Games Store! Knightica is a 2d turn-based roguelike auto-battler where you lead an army of powerful units.\r\n\r\n*Please note this game is also available via Epic Games App (Android and iOS)!",
-      "worth": "$14.99",
-      "image": "https://www.gamerpower.com/offers/1b/6af5f33e49913.jpg",
-      "thumbnail": "https://www.gamerpower.com/offers/1/6af5f33e49913.jpg",
-      "url": "https://www.gamerpower.com/open/knightica-epic-games-giveaway",
-      "platforms": "PC, Android, iOS, Epic Games Store",
-      "end_date": "2026-11-19 23:59:00",
       "type": "game"
     },
     {
